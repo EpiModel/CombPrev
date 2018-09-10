@@ -5,16 +5,15 @@ devtools::load_all("~/Dropbox/Dev/EpiModelHIV/EpiModelHIV")
 
 # Main Test Script ----------------------------------------------------
 
+setwd("/Users/sjennes/Dropbox/Projects/CombPrev/CombPrev")
+
 load("est/nwstats.prace.rda")
 load("est/fit.prace.rda")
 
 param <- param_msm(nwstats = st,
                    prep.start = 5000,
-                   prep.coverage = 0,
-                   riskh.start = 3,
-                   prep.timing.lnt = TRUE,
-                   prep.indics = 5,
-                   prep.sens.start = 30)
+                   prep.coverage = 0.2,
+                   riskh.start = 3)
 init <- init_msm(nwstats = st,
                  prev.B = 0.434,
                  prev.W = 0.132)
@@ -33,7 +32,6 @@ control <- control_msm(simno = 1,
                        aiclass.FUN = NULL,
                        roleclass.FUN = NULL,
                        resim_nets.FUN = simnet_msm,
-                       disclose.FUN = disclose_msm,
                        acts.FUN = acts_msm,
                        condoms.FUN = condoms_msm,
                        position.FUN = position_msm,
@@ -49,21 +47,6 @@ sim <- netsim(est, param, init, control)
 
 df <- as.data.frame(sim)
 names(df)
-df$prep.sens
-df$prep.spec
-df$prep.sens.1y
-df$prep.sens.5y
-df$prep.spec.1y
-df$prep.spec.5y
-
-df$prep.sens.ftime
-df$prep.sens.ltime
-
-plot(sim, y = "prep.sens.1y")
-plot(sim, y = "prep.spec")
-plot(sim, y = c("prev.rgcct", "prev.ugcct"),
-     mean.col = 1:2, leg = TRUE)
-plot(sim, y = c("ir100.gc", "ir100.ct"))
 
 
 # Testing/Timing ------------------------------------------------------
@@ -71,7 +54,7 @@ plot(sim, y = c("ir100.gc", "ir100.ct"))
 
 dat <- initialize_msm(est, param, init, control, s = 1)
 
-for (at in 2:520) {
+for (at in 2:100) {
   dat <- aging_msm(dat, at)
   dat <- deaths_msm(dat, at)
   dat <- births_msm(dat, at)
@@ -80,7 +63,6 @@ for (at in 2:520) {
   dat <- progress_msm(dat, at)
   dat <- vl_msm(dat, at)
   dat <- simnet_msm(dat, at)
-  dat <- disclose_msm(dat, at)
   dat <- acts_msm(dat, at)
   dat <- condoms_msm(dat, at)
   dat <- position_msm(dat, at)
