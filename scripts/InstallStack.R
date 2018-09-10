@@ -5,26 +5,12 @@
 system("git pull")
 devtools::install_github("statnet/EpiModel")
 devtools::install_github("statnet/EpiModelHPC")
-devtools::install_github("statnet/tergmLite", subdir = "tergmLite", ref = "preFastEl")
-
-# version last run for paper
-devtools::install_github("statnet/EpiModelHIV", ref = "p3LID")
-
-## to do: previous version checked, done
-##        install current prep-sti recheck
-
-##        merge master into prep-sti (new tergmLite)
-# current working version of PrEP STI branch
-devtools::install_github("statnet/EpiModelHIV", ref = "prep-sti")
-
-##        merge master into prep-sti (new tergmLite)
-devtools::install_github("statnet/EpiModelHIV", ref = "prep-sti")
-devtools::install_github("statnet/tergmLite", subdir = "tergmLite", ref = "master")
+devtools::install_github("statnet/tergmLite")
 
 ##        new codebase
-devtools::install_github("statnet/EpiModelHIV", ref = "PrEPsens")
+devtools::install_github("statnet/EpiModelHIV", ref = "CombPrev")
 
 
 # upload inputs
-system("scp est/*.rda hyak:/gscratch/csde/sjenness/psens/est")
-system("scp scripts/burnin/*.burn.* hyak:/gscratch/csde/sjenness/psens/")
+system("scp est/*.rda hyak:/suppscr/csde/sjenness/combprev/est")
+system("scp scripts/burnin/*.burn.* hyak:/suppscr/csde/sjenness/combprev/")
