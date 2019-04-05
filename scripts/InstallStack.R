@@ -1,16 +1,26 @@
 
-## Update stiPrEP stack
+# Install EpiModel Stack
+install.packages("EpiModel")
 
-# Version before fastEL tergmLite merged in
-system("git pull")
-devtools::install_github("statnet/EpiModel")
-devtools::install_github("statnet/EpiModelHPC")
-devtools::install_github("statnet/tergmLite")
+# Install Extra Helper Packages
+install.packages(c("remotes", "sessioninfo"))
 
-##        new codebase
-devtools::install_github("statnet/EpiModelHIV", ref = "CombPrev")
+# Latest Dev Versions of Packages
+remotes::install_github(c("statnet/network",
+                          "statnet/statnet.common",
+                          "statnet/ergm",
+                          "statnet/tergm"))
+
+remotes::install_github(c("statnet/EpiModel",
+                          "statnet/EpiModelHPC",
+                          "statnet/tergmLite",
+                          "EpiModel/EpiABC"))
+
+remotes::install_github("EpiModel/EpiModelHIV-p", ref = "CombPrev")
 
 
-# upload inputs
-system("scp est/*.rda hyak:/suppscr/csde/sjenness/combprev/est")
-system("scp scripts/burnin/*.burn.* hyak:/suppscr/csde/sjenness/combprev/")
+# Package Listing ---------------------------------------------------------
+
+library("EpiModelHIV")
+sessioninfo::session_info()
+

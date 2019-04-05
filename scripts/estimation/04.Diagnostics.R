@@ -64,6 +64,7 @@ dx_casl <- netdx(fit_casl, nsims = 5000, dynamic = FALSE,
                  set.control.ergm = control.simulate.ergm(MCMC.burnin = 1e5))
 print(dx_casl)
 
+
 # One-Off -----------------------------------------------------------------
 
 fit_inst <- est[[3]]

@@ -1,14 +1,14 @@
 
 rm(list = ls())
 suppressMessages(library("EpiModelHIV"))
-devtools::load_all("~/Dropbox/Dev/EpiModelHIV/EpiModelHIV")
+devtools::load_all("~/Dropbox/Dev/EpiModelHIV/EpiModelHIV-p")
 
 # Main Test Script ----------------------------------------------------
 
-setwd("/Users/sjennes/Dropbox/Projects/CombPrev/CombPrev")
+setwd("~/Dropbox/Projects/CombPrev/CombPrev")
 
-load("est/nwstats.prace.rda")
-load("est/fit.prace.rda")
+est <- readRDS("scripts/estimation/data/artnet.NetEst.Atlanta.rda")
+st <- readRDS("scripts/estimation/data/artnet.NetStats.Atlanta.rda")
 
 param <- param_msm(nwstats = st,
                    prep.start = 5000,
