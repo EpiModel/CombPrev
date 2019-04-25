@@ -9,9 +9,9 @@ install.packages("EpiModel")
 install.packages(c("remotes", "sessioninfo"))
 
 # Latest Dev Versions of Statnet Packages
+remotes::install_github("statnet/ergm", ref = "8b30e92")
 remotes::install_github(c("statnet/network",
                           "statnet/statnet.common",
-                          "statnet/ergm",
                           "statnet/tergm"))
 
 # Latest Dev Versions of EpiModel Packages

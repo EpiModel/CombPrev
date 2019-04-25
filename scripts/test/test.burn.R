@@ -3,20 +3,19 @@ rm(list = ls())
 suppressMessages(library("EpiModelHIV"))
 devtools::load_all("~/Dropbox/Dev/EpiModelHIV/EpiModelHIV-p")
 
-scr.dir <- "~/Dropbox/Dev/ARTnet/"
-netstats <- readRDS(file.path(scr.dir, "data/artnet.NetStats.Atlanta.rda"))
-epistats <- readRDS(file.path(scr.dir, "data/artnet.EpiStats.Atlanta.rda"))
-est <- readRDS(file.path(scr.dir, "data/artnet.NetEst.Atlanta.rda"))
+netstats <- readRDS("est/artnet.NetStats.Atlanta.rda")
+epistats <- readRDS("est/artnet.EpiStats.Atlanta.rda")
+est <- readRDS("est/artnet.NetEst.Atlanta.rda")
 
 param <- param_msm(netstats = netstats,
-                   hiv.test.int = c(43, 45),
+                   hiv.test.int = c(43, 43, 45),
                    a.rate = 0.00055,
                    riskh.start = 2,
                    prep.start = 30,
                    prep.start.prob = 0.10,
-                   tt.part.supp = c(0.20, 0.20),
-                   tt.full.supp = c(0.40, 0.40),
-                   tt.dur.supp = c(0.40, 0.40),
+                   tt.part.supp = c(0.20, 0.20, 0.20),
+                   tt.full.supp = c(0.40, 0.40, 0.40),
+                   tt.dur.supp = c(0.40, 0.40, 0.40),
                    tx.halt.full.rr = 0.8,
                    tx.halt.dur.rr = 0.1,
                    tx.reinit.full.rr = 2.0,
@@ -26,12 +25,21 @@ param <- param_msm(netstats = netstats,
                    hiv.rct.rr = 2.5,
                    hiv.uct.rr = 1.5,
                    hiv.dual.rr = 0.0,
+                   rgc.tprob = 0.35, #0.35,
+                   ugc.tprob = 0.25, #0.25,
+                   rct.tprob = 0.20,
+                   uct.tprob = 0.16,
+                   rgc.ntx.int = 16.8,
+                   ugc.ntx.int = 16.8,
+                   rct.ntx.int = 32,
+                   uct.ntx.int = 32,
                    acts.aids.vl = 5.75)
 init <- init_msm(init.hiv.mod = epistats$hiv.mod)
 control <- control_msm(simno = 1,
-                       nsteps = 52 * 10,
+                       nsteps = 52 * 5,
                        nsims = 1,
-                       ncores = 1)
+                       ncores = 1,
+                       save.nwstats = TRUE)
 
 sim <- netsim(est, param, init, control)
 
@@ -64,6 +72,10 @@ plot(sim, y = "ir100.ct", mean.smooth = FALSE)
 plot(sim, y = "ir100.sti", mean.smooth = FALSE)
 plot(sim, y = "prev.gc", mean.smooth = FALSE)
 plot(sim, y = "prev.ct", mean.smooth = FALSE)
+
+plot(sim, type = "formation", network = 1, plots.joined = FALSE)
+plot(sim, type = "formation", network = 2, plots.joined = FALSE)
+plot(sim, type = "formation", network = 3, plots.joined = FALSE)
 
 
 # Testing/Timing ------------------------------------------------------
