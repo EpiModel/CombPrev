@@ -9,25 +9,27 @@ install.packages("EpiModel")
 install.packages(c("remotes", "sessioninfo"))
 
 # Latest Dev Versions of Statnet Packages
-remotes::install_github("statnet/network", ref = "deff2a0")
-remotes::install_github("statnet/networkDynamic", ref = "14182bf")
-remotes::install_github("statnet/statnet.common", ref = "3307a8c")
-remotes::install_github("statnet/ergm", ref = "8b30e92")
-remotes::install_github("statnet/tergm", ref = "d3af135")
+remotes::install_github("statnet/network", ref = "deff2a0", upgrade = FALSE)
+remotes::install_github("statnet/networkDynamic", ref = "14182bf", upgrade = FALSE)
+remotes::install_github("statnet/statnet.common", ref = "3307a8c", upgrade = FALSE)
+remotes::install_github("statnet/ergm", ref = "8b30e92", upgrade = FALSE)
+remotes::install_github("statnet/tergm", ref = "d3af135", upgrade = FALSE)
 
 # Latest Dev Versions of EpiModel Packages
 remotes::install_github(c("statnet/EpiModel",
                           "statnet/EpiModelHPC",
                           "statnet/tergmLite",
-                          "EpiModel/EpiABC"))
+                          "EpiModel/EpiABC"),
+                        upgrade = FALSE)
 
 # Current Version of EpiModelHIV for Project
-remotes::install_github("EpiModel/EpiModelHIV-p", ref = "CombPrev")
+remotes::install_github("EpiModel/EpiModelHIV-p", ref = "CombPrev", upgrade = FALSE)
 
 
 # Package Listing ---------------------------------------------------------
 
 library("EpiModelHIV")
+options(width = 100)
 sessioninfo::package_info(pkgs = c("network", "networkDynamic", "statnet.common",
                                    "ergm", "tergm", "EpiModel", "EpiModelHPC",
                                    "tergmLite", "EpiABC", "EpiModelHIV"), dependencies = FALSE)
