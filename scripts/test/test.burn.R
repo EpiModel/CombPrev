@@ -8,6 +8,7 @@ epistats <- readRDS("est/artnet.EpiStats.Atlanta.rda")
 est <- readRDS("est/artnet.NetEst.Atlanta.rda")
 
 param <- param_msm(netstats = netstats,
+                   epistats = epistats,
                    hiv.test.int = c(43, 43, 45),
                    a.rate = 0.00055,
                    riskh.start = 2,
@@ -20,26 +21,17 @@ param <- param_msm(netstats = netstats,
                    tx.halt.dur.rr = 0.1,
                    tx.reinit.full.rr = 2.0,
                    tx.reinit.dur.rr = 5.0,
-                   hiv.rgc.rr = 2.5,
-                   hiv.ugc.rr = 1.5,
-                   hiv.rct.rr = 2.5,
-                   hiv.uct.rr = 1.5,
-                   hiv.dual.rr = 0.0,
-                   rgc.tprob = 0.35, #0.35,
-                   ugc.tprob = 0.25, #0.25,
-                   rct.tprob = 0.20,
-                   uct.tprob = 0.16,
-                   rgc.ntx.int = 16.8,
-                   ugc.ntx.int = 16.8,
-                   rct.ntx.int = 32,
-                   uct.ntx.int = 32,
                    acts.aids.vl = 5.75)
-init <- init_msm(init.hiv.mod = epistats$hiv.mod)
+init <- init_msm(prev.ugc = 0,
+                 prev.rct = 0,
+                 prev.rgc = 0,
+                 prev.uct = 0)
 control <- control_msm(simno = 1,
                        nsteps = 52 * 5,
                        nsims = 1,
                        ncores = 1,
-                       save.nwstats = TRUE)
+                       save.nwstats = FALSE,
+                       save.clin.hist = FALSE)
 
 sim <- netsim(est, param, init, control)
 
@@ -53,7 +45,7 @@ plot(sim, y = "dep.gen", mean.smooth = TRUE)
 plot(sim, y = "dep.AIDS", mean.smooth = FALSE)
 plot(sim, y = "prepCurr")
 plot(sim, y = "cc.dx", mean.smooth = FALSE)
-plot(sim, y = "cc.linked", mean.smooth = FALSE, ylim = c(0.8, 1))
+plot(sim, y = "cc.linked", mean.smooth = FALSE)
 plot(sim, y = "cc.linked1m", mean.smooth = FALSE)
 plot(sim, y = "cc.tx", mean.smooth = FALSE)
 plot(sim, y = "cc.tx.any1y", mean.smooth = FALSE)
@@ -80,29 +72,31 @@ plot(sim, type = "formation", network = 3, plots.joined = FALSE)
 
 # Testing/Timing ------------------------------------------------------
 
-m <- microbenchmark::microbenchmark(hivvl_msm(dat, at))
+m <- microbenchmark::microbenchmark(acts_msm(dat, at))
 print(m, unit = "ms")
+
+profvis::profvis(simnet_msm(dat, at), interval = 0.005)
 
 dat <- initialize_msm(est, param, init, control, s = 1)
 
 for (at in 2:200) {
-  dat <- aging_msm(dat, at)
-  dat <- departure_msm(dat, at)
-  dat <- arrival_msm(dat, at)
-  dat <- hivtest_msm(dat, at)
-  dat <- hivtx_msm(dat, at)
-  dat <- hivprogress_msm(dat, at)
-  dat <- hivvl_msm(dat, at)
-  dat <- simnet_msm(dat, at)
-  dat <- acts_msm(dat, at)
-  dat <- condoms_msm(dat, at)
-  dat <- position_msm(dat, at)
-  dat <- prep_msm(dat, at)
-  dat <- hivtrans_msm(dat, at)
-  dat <- stitrans_msm(dat, at)
-  dat <- stirecov_msm(dat, at)
-  dat <- stitx_msm(dat, at)
-  dat <- prevalence_msm(dat, at)
+  dat <- aging_msm(dat, at) # 1 ms
+  dat <- departure_msm(dat, at) # 10 ms
+  dat <- arrival_msm(dat, at) # 7 ms
+  dat <- hivtest_msm(dat, at) # 2 ms
+  dat <- hivtx_msm(dat, at) # 3 ms
+  dat <- hivprogress_msm(dat, at) # 3 ms
+  dat <- hivvl_msm(dat, at) # 5 ms
+  dat <- simnet_msm(dat, at) # 86 ms
+  dat <- acts_msm(dat, at) # 13 ms
+  dat <- condoms_msm(dat, at) # 10 ms
+  dat <- position_msm(dat, at) # 1 ms
+  dat <- prep_msm(dat, at) # 8 ms
+  dat <- hivtrans_msm(dat, at) # 3 ms
+  dat <- stitrans_msm(dat, at) # 7 ms
+  dat <- stirecov_msm(dat, at) # 4 ms
+  dat <- stitx_msm(dat, at) # 6 ms
+  dat <- prevalence_msm(dat, at) # 5 ms
   verbose.net(dat, "progress", at = at)
 }
 
@@ -119,6 +113,5 @@ hist(pmain$start)
 
 
 ## TODO:
-# make all late testers go into tt.traj 1 (not full/dur suppressed)
 # updates to VL module for tt.traj=1, on/off treatment
 
