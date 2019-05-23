@@ -3,16 +3,16 @@ rm(list = ls())
 suppressMessages(library("EpiModelHIV"))
 devtools::load_all("~/Dropbox/Dev/EpiModelHIV/EpiModelHIV-p")
 
-netstats <- readRDS("est/artnet.NetStats.Atlanta.rda")
-epistats <- readRDS("est/artnet.EpiStats.Atlanta.rda")
-est <- readRDS("est/artnet.NetEst.Atlanta.rda")
+netstats <- readRDS("est/netstats.rda")
+epistats <- readRDS("est/epistats.rda")
+netest <- readRDS("est/netest.rda")
 
 param <- param_msm(netstats = netstats,
                    epistats = epistats,
                    hiv.test.int = c(43, 43, 45),
                    a.rate = 0.00055,
-                   riskh.start = 2,
-                   prep.start = 30,
+                   riskh.start = Inf,
+                   prep.start = Inf,
                    prep.start.prob = 0.10,
                    tt.part.supp = c(0.20, 0.20, 0.20),
                    tt.full.supp = c(0.40, 0.40, 0.40),
@@ -27,13 +27,13 @@ init <- init_msm(prev.ugc = 0,
                  prev.rgc = 0,
                  prev.uct = 0)
 control <- control_msm(simno = 1,
-                       nsteps = 52 * 5,
+                       nsteps = 52 * 25,
                        nsims = 1,
                        ncores = 1,
-                       save.nwstats = FALSE,
+                       save.nwstats = TRUE,
                        save.clin.hist = FALSE)
 
-sim <- netsim(est, param, init, control)
+sim <- netsim(netest, param, init, control)
 
 df <- as.data.frame(sim)
 names(df)
@@ -77,7 +77,7 @@ print(m, unit = "ms")
 
 profvis::profvis(simnet_msm(dat, at), interval = 0.005)
 
-dat <- initialize_msm(est, param, init, control, s = 1)
+dat <- initialize_msm(netest, param, init, control, s = 1)
 
 for (at in 2:200) {
   dat <- aging_msm(dat, at) # 1 ms
@@ -109,9 +109,3 @@ plist <- as.data.frame(dat$temp$plist)
 pmain <- filter(plist, ptype == 2)
 table(pmain$start)
 hist(pmain$start)
-
-
-
-## TODO:
-# updates to VL module for tt.traj=1, on/off treatment
-
