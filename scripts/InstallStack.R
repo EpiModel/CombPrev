@@ -9,11 +9,17 @@ install.packages("EpiModel")
 install.packages(c("remotes", "sessioninfo"))
 
 # Latest Dev Versions of Statnet Packages
-remotes::install_github("statnet/network", ref = "deff2a0", upgrade = FALSE)
-remotes::install_github("statnet/networkDynamic", ref = "14182bf", upgrade = FALSE)
-remotes::install_github("statnet/statnet.common", ref = "3307a8c", upgrade = FALSE)
-remotes::install_github("statnet/ergm", ref = "8b30e92", upgrade = FALSE)
-remotes::install_github("statnet/tergm", ref = "d3af135", upgrade = FALSE)
+remotes::install_version("network", version = "1.15")
+remotes::install_version("networkDynamic", version = "0.10.0")
+remotes::install_version("statnet.common", version = "4.2.0")
+remotes::install_version("ergm", version = "3.10.1")
+remotes::install_version("tergm", version = "3.6.0")
+
+remotes::install_github("statnet/network", ref = "deff2a0")
+remotes::install_github("statnet/networkDynamic", ref = "14182bf")
+remotes::install_github("statnet/statnet.common", ref = "3307a8c")
+remotes::install_github("statnet/ergm", ref = "8b30e92")
+remotes::install_github("statnet/tergm", ref = "d3af135")
 
 # Latest Dev Versions of EpiModel Packages
 remotes::install_github(c("statnet/EpiModel",
@@ -36,13 +42,13 @@ sessioninfo::package_info(pkgs = c("network", "networkDynamic", "statnet.common"
 
 # Mox May 7 2019
 # package        * version     date       lib source
-# EpiABC           1.0         2019-03-27 [1] Github (EpiModel/EpiABC@5493530)
-# EpiModel       * 1.7.3       2019-05-07 [1] Github (statnet/EpiModel@2c131f0)
-# EpiModelHIV    * 1.5.0       2019-05-07 [1] Github (EpiModel/EpiModelHIV-p@c9ae989)
-# EpiModelHPC    * 2.0.1       2019-05-07 [1] Github (statnet/EpiModelHPC@e5078f0)
-# ergm           * 3.10.0-4851 2019-05-07 [1] Github (statnet/ergm@8b30e92)
-# network        * 1.14-377    2019-05-07 [1] Github (statnet/network@deff2a0)
-# networkDynamic * 0.10        2019-05-03 [1] Github (statnet/networkDynamic@14182bf)
-# statnet.common   4.3.0-230   2019-02-20 [1] Github (statnet/statnet.common@3307a8c)
-# tergm          * 3.6.0-1659  2019-05-03 [1] Github (statnet/tergm@d3af135)
-# tergmLite      * 1.2.0       2019-01-22 [1] Github (statnet/tergmLite@73d2a2d)
+# EpiABC           1.0     2019-05-16 [1] Github (EpiModel/EpiABC@c32ecb6)
+# EpiModel       * 1.7.3   2019-05-16 [1] Github (statnet/EpiModel@2c131f0)
+# EpiModelHIV    * 1.5.0   2019-05-16 [1] Github (EpiModel/EpiModelHIV-p@fd9f093)
+# EpiModelHPC    * 2.0.1   2019-05-16 [1] Github (statnet/EpiModelHPC@e5078f0)
+# ergm           * 3.10.1  2019-05-14 [1] CRAN (R 3.6.0)
+# network        * 1.15    2019-04-02 [1] CRAN (R 3.6.0)
+# networkDynamic * 0.10.0  2019-04-05 [1] CRAN (R 3.6.0)
+# statnet.common   4.2.0   2019-01-08 [1] CRAN (R 3.6.0)
+# tergm          * 3.6.0   2019-05-15 [1] CRAN (R 3.6.0)
+# tergmLite      * 1.2.0   2019-05-16 [1] Github (statnet/tergmLite@73d2a2d)
