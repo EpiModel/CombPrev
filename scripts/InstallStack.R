@@ -9,23 +9,19 @@ install.packages("EpiModel")
 install.packages(c("remotes", "sessioninfo"))
 
 # Latest Dev Versions of Statnet Packages
-remotes::install_version("network", version = "1.15")
-remotes::install_version("networkDynamic", version = "0.10.0")
-remotes::install_version("statnet.common", version = "4.2.0")
-remotes::install_version("ergm", version = "3.10.1")
-remotes::install_version("tergm", version = "3.6.0")
-
-remotes::install_github("statnet/network", ref = "deff2a0")
-remotes::install_github("statnet/networkDynamic", ref = "14182bf")
-remotes::install_github("statnet/statnet.common", ref = "3307a8c")
-remotes::install_github("statnet/ergm", ref = "8b30e92")
-remotes::install_github("statnet/tergm", ref = "d3af135")
+remotes::install_github("statnet/network", ref = "deff2a0", upgrade = FALSE)
+remotes::install_github("statnet/networkDynamic", ref = "14182bf", upgrade = FALSE)
+remotes::install_github("statnet/statnet.common", ref = "3307a8c", upgrade = FALSE)
+remotes::install_github("statnet/ergm", ref = "8b30e92", upgrade = FALSE)
+remotes::install_github("statnet/tergm", ref = "d3af135", upgrade = FALSE)
 
 # Latest Dev Versions of EpiModel Packages
 remotes::install_github(c("statnet/EpiModel",
                           "statnet/EpiModelHPC",
                           "statnet/tergmLite",
-                          "EpiModel/EpiABC"),
+                          "EpiModel/EpiABC",
+                          "EpiModel/ARTnetData",
+                          "EpiModel/ARTnet"),
                         upgrade = FALSE)
 
 # Current Version of EpiModelHIV for Project
