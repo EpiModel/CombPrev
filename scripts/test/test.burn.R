@@ -1,16 +1,16 @@
 
 rm(list = ls())
-suppressMessages(library("EpiModelHIV"))
+# suppressMessages(library("EpiModelHIV"))
 devtools::load_all("~/Dropbox/Dev/EpiModelHIV/EpiModelHIV-p")
 
 netstats <- readRDS("est/netstats.rda")
 epistats <- readRDS("est/epistats.rda")
-netest <- readRDS("est/netest.rda")
+est <- readRDS("est/netest.simple.rda")
 
 param <- param_msm(netstats = netstats,
                    epistats = epistats,
                    hiv.test.int = c(43, 43, 45),
-                   a.rate = 0.00055,
+                   a.rate = 0.00052,
                    riskh.start = Inf,
                    prep.start = Inf,
                    prep.start.prob = 0.10,
@@ -27,19 +27,21 @@ init <- init_msm(prev.ugc = 0,
                  prev.rgc = 0,
                  prev.uct = 0)
 control <- control_msm(simno = 1,
-                       nsteps = 52 * 25,
-                       nsims = 1,
-                       ncores = 1,
+                       nsteps = 52*25,
+                       nsims = 4,
+                       ncores = 4,
                        save.nwstats = TRUE,
                        save.clin.hist = FALSE)
 
-sim <- netsim(netest, param, init, control)
+sim <- netsim(est, param, init, control)
+load("data/sim.n1000.rda")
 
 df <- as.data.frame(sim)
 names(df)
 
 par(mar = c(3,3,1,1), mgp = c(2,1,0))
 plot(sim, y = "i.prev", mean.smooth = FALSE, ylim = c(0, 1))
+plot(sim, y = "ir100", ylim = c(0, 10))
 plot(sim, y = "num")
 plot(sim, y = "dep.gen", mean.smooth = TRUE)
 plot(sim, y = "dep.AIDS", mean.smooth = FALSE)
@@ -65,9 +67,17 @@ plot(sim, y = "ir100.sti", mean.smooth = FALSE)
 plot(sim, y = "prev.gc", mean.smooth = FALSE)
 plot(sim, y = "prev.ct", mean.smooth = FALSE)
 
-plot(sim, type = "formation", network = 1, plots.joined = FALSE)
-plot(sim, type = "formation", network = 2, plots.joined = FALSE)
-plot(sim, type = "formation", network = 3, plots.joined = FALSE)
+plot(sim, type = "formation", network = 1, plots.joined = FALSE, qnts = 1, mean.smooth = TRUE)
+plot(sim, type = "formation", network = 2, plots.joined = FALSE, qnts = 1, mean.smooth = TRUE)
+plot(sim, type = "formation", network = 3, plots.joined = FALSE, qnts = 1, mean.smooth = TRUE)
+
+# include other nodefactor terms, check distribution of deg.tot, risk.grp over time
+
+plot(sim, y = "riskg5.prop", mean.smooth = FALSE)
+plot(sim, y = "riskg.mean", mean.smooth = FALSE)
+
+plot(sim, y = "depAIDS.rg5", mean.smooth = TRUE)
+plot(sim, y = "risk.grp5.new", mean.smooth = TRUE)
 
 
 # Testing/Timing ------------------------------------------------------

@@ -5,17 +5,16 @@ suppressMessages(library("EpiModelHIV"))
 suppressMessages(library("EpiABC"))
 
 ## Environmental Arguments
-pull_env_vars(num.vars = "AAV")
+pull_env_vars()
 
 ## Parameters
-netstats <- readRDS("est/artnet.NetStats.Atlanta.rda")
-epistats <- readRDS("est/artnet.EpiStats.Atlanta.rda")
-est <- readRDS("est/artnet.NetEst.Atlanta.rda")
+netstats <- readRDS("est/netstats.rda")
+epistats <- readRDS("est/epistats.rda")
+est <- readRDS("est/netest.simple.rda")
 
 param <- param_msm(netstats = netstats,
                    epistats = epistats,
                    hiv.test.int = c(43, 43, 45),
-                   hiv.test.late.prob = c(0.25, 0.25, 0.25),
                    a.rate = 0.00055,
                    riskh.start = Inf,
                    prep.start = Inf,
@@ -27,7 +26,7 @@ param <- param_msm(netstats = netstats,
                    tx.halt.dur.rr = 0.1,
                    tx.reinit.full.rr = 2.0,
                    tx.reinit.dur.rr = 5.0,
-                   acts.aids.vl = AAV)
+                   acts.aids.vl = 5.75)
 # init <- init_msm()
 init <- init_msm(prev.ugc = 0,
                  prev.rct = 0,
