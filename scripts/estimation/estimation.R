@@ -88,7 +88,6 @@ netstats_casl <- c(
   nodefactor_race = netstats$casl$nodefactor_race[-1],
   nodefactor_deg.main = netstats$casl$nodefactor_deg.main[-3],
   concurrent = netstats$casl$concurrent,
-  # nodefactor_diag.status = netstats$casl$nodefactor_diag.status[-1],
   degrange = 0,
   nodematch_role.class = c(0, 0)
 )
