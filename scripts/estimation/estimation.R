@@ -60,8 +60,8 @@ fit_main <- netest(nw_main,
                    target.stats = netstats_main,
                    coef.diss = netstats$main$diss.byage,
                    set.control.ergm = control.ergm(MCMLE.maxit = 500,
-                                                   SAN.maxit = 5,
-                                                   SAN.nsteps.times = 5),
+                                                   SAN.maxit = 3,
+                                                   SAN.nsteps.times = 3),
                    verbose = FALSE)
 
 
@@ -100,8 +100,8 @@ fit_casl <- netest(nw_casl,
                    target.stats = netstats_casl,
                    coef.diss = netstats$casl$diss.byage,
                    set.control.ergm = control.ergm(MCMLE.maxit = 500,
-                                                   SAN.maxit = 5,
-                                                   SAN.nsteps.times = 5),
+                                                   SAN.maxit = 3,
+                                                   SAN.nsteps.times = 3),
                    verbose = FALSE)
 
 
@@ -137,8 +137,8 @@ fit_inst <- netest(nw_inst,
                    target.stats = netstats_inst,
                    coef.diss = dissolution_coefs(~offset(edges), 1),
                    set.control.ergm = control.ergm(MCMLE.maxit = 500,
-                                                   SAN.maxit = 5,
-                                                   SAN.nsteps.times = 5),
+                                                   SAN.maxit = 3,
+                                                   SAN.nsteps.times = 3),
                    verbose = FALSE)
 
 

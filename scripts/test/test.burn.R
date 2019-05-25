@@ -5,7 +5,7 @@ devtools::load_all("~/Dropbox/Dev/EpiModelHIV/EpiModelHIV-p")
 
 netstats <- readRDS("est/netstats.rda")
 epistats <- readRDS("est/epistats.rda")
-est <- readRDS("est/netest.simple.rda")
+est <- readRDS("est/netest.rda")
 
 param <- param_msm(netstats = netstats,
                    epistats = epistats,
@@ -28,9 +28,9 @@ init <- init_msm(prev.ugc = 0,
                  prev.uct = 0)
 control <- control_msm(simno = 1,
                        nsteps = 52*25,
-                       nsims = 4,
-                       ncores = 4,
-                       save.nwstats = TRUE,
+                       nsims = 1,
+                       ncores = 1,
+                       save.nwstats = FALSE,
                        save.clin.hist = FALSE)
 
 sim <- netsim(est, param, init, control)
@@ -73,21 +73,21 @@ plot(sim, type = "formation", network = 3, plots.joined = FALSE, qnts = 1, mean.
 
 # include other nodefactor terms, check distribution of deg.tot, risk.grp over time
 
-plot(sim, y = "riskg5.prop", mean.smooth = FALSE)
-plot(sim, y = "riskg.mean", mean.smooth = FALSE)
-
-plot(sim, y = "depAIDS.rg5", mean.smooth = TRUE)
-plot(sim, y = "risk.grp5.new", mean.smooth = TRUE)
+mean(sim$temp[[1]]$R0, na.rm = TRUE)
+df$R0.mean
+mean(df$R0.mean, na.rm = TRUE)
+mean(tail(df$R0.mean, 104), na.rm = TRUE)
+plot(sim, y = "R0.mean")
 
 
 # Testing/Timing ------------------------------------------------------
 
-m <- microbenchmark::microbenchmark(acts_msm(dat, at))
+m <- microbenchmark::microbenchmark(f(dat, at = 2))
 print(m, unit = "ms")
 
-profvis::profvis(simnet_msm(dat, at), interval = 0.005)
+profvis::profvis(f(dat, at = 2), interval = 0.005)
 
-dat <- initialize_msm(netest, param, init, control, s = 1)
+dat <- initialize_msm(est, param, init, control, s = 1)
 
 for (at in 2:200) {
   dat <- aging_msm(dat, at) # 1 ms
@@ -108,6 +108,26 @@ for (at in 2:200) {
   dat <- stitx_msm(dat, at) # 6 ms
   dat <- prevalence_msm(dat, at) # 5 ms
   verbose.net(dat, "progress", at = at)
+}
+
+f <- function(dat, at) {
+  dat <- aging_msm(dat, at) # 1 ms
+  dat <- departure_msm(dat, at) # 10 ms
+  dat <- arrival_msm(dat, at) # 7 ms
+  dat <- hivtest_msm(dat, at) # 2 ms
+  dat <- hivtx_msm(dat, at) # 3 ms
+  dat <- hivprogress_msm(dat, at) # 3 ms
+  dat <- hivvl_msm(dat, at) # 5 ms
+  dat <- simnet_msm(dat, at) # 86 ms
+  dat <- acts_msm(dat, at) # 13 ms
+  dat <- condoms_msm(dat, at) # 10 ms
+  dat <- position_msm(dat, at) # 1 ms
+  dat <- prep_msm(dat, at) # 8 ms
+  dat <- hivtrans_msm(dat, at) # 3 ms
+  dat <- stitrans_msm(dat, at) # 7 ms
+  dat <- stirecov_msm(dat, at) # 4 ms
+  dat <- stitx_msm(dat, at) # 6 ms
+  dat <- prevalence_msm(dat, at) # 5 ms
 }
 
 nrow(dat$temp$plist)
