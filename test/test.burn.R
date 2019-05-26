@@ -27,22 +27,25 @@ init <- init_msm(prev.ugc = 0,
                  prev.rgc = 0,
                  prev.uct = 0)
 control <- control_msm(simno = 1,
-                       nsteps = 52*25,
+                       nsteps = 52*1,
                        nsims = 1,
                        ncores = 1,
                        save.nwstats = FALSE,
                        save.clin.hist = FALSE)
 
 sim <- netsim(est, param, init, control)
-load("data/sim.n1000.rda")
 
-df <- as.data.frame(sim)
+load("scripts/burnin/data/sim.n1007.rda")
+sim$param$acts.scale
+
+df <- as.data.frame(sim, out = "mean")
 names(df)
 
 par(mar = c(3,3,1,1), mgp = c(2,1,0))
 plot(sim, y = "i.prev", mean.smooth = FALSE, ylim = c(0, 1))
 plot(sim, y = "ir100", ylim = c(0, 10))
 plot(sim, y = "num")
+plot(sim, y = "age.mean")
 plot(sim, y = "dep.gen", mean.smooth = TRUE)
 plot(sim, y = "dep.AIDS", mean.smooth = FALSE)
 plot(sim, y = "prepCurr")
@@ -67,17 +70,17 @@ plot(sim, y = "ir100.sti", mean.smooth = FALSE)
 plot(sim, y = "prev.gc", mean.smooth = FALSE)
 plot(sim, y = "prev.ct", mean.smooth = FALSE)
 
+plot(sim, y = "R0.mean.cs", mean.smooth = FALSE)
+plot(sim, y = "R0.mean.cens", mean.smooth = FALSE)
+
 plot(sim, type = "formation", network = 1, plots.joined = FALSE, qnts = 1, mean.smooth = TRUE)
 plot(sim, type = "formation", network = 2, plots.joined = FALSE, qnts = 1, mean.smooth = TRUE)
 plot(sim, type = "formation", network = 3, plots.joined = FALSE, qnts = 1, mean.smooth = TRUE)
 
 # include other nodefactor terms, check distribution of deg.tot, risk.grp over time
 
-mean(sim$temp[[1]]$R0, na.rm = TRUE)
-df$R0.mean
-mean(df$R0.mean, na.rm = TRUE)
-mean(tail(df$R0.mean, 104), na.rm = TRUE)
-plot(sim, y = "R0.mean")
+mean(tail(df$R0.mean.cens, 52), na.rm = TRUE)
+mean(tail(df$R0.mean.cs, 52))
 
 
 # Testing/Timing ------------------------------------------------------
