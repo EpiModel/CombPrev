@@ -5,7 +5,6 @@ gather_netsim <- function(fn) {
   for (i in seq_along(fn)) {
     if (i == 1) {
       out <- list()
-      cat("\n")
     }
     load(fn[i])
     out[[i]] <- sim

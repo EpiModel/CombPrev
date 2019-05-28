@@ -9,25 +9,30 @@ est <- readRDS("est/netest.rda")
 
 param <- param_msm(netstats = netstats,
                    epistats = epistats,
-                   hiv.test.int = c(43, 43, 45),
-                   a.rate = 0.00052,
-                   riskh.start = Inf,
-                   prep.start = Inf,
-                   prep.start.prob = 0.10,
+
+                   hiv.test.rate = c(0.01325, 0.0125, 0.0124),
+                   hiv.test.late.prob = c(0, 0, 0),
                    tt.part.supp = c(0.20, 0.20, 0.20),
                    tt.full.supp = c(0.40, 0.40, 0.40),
                    tt.dur.supp = c(0.40, 0.40, 0.40),
-                   tx.halt.full.rr = 0.8,
-                   tx.halt.dur.rr = 0.1,
+                   tx.init.prob = c(0.092, 0.092, 0.127),
+                   tx.halt.part.prob = c(0.0102, 0.0102, 0.0071),
+                   tx.halt.full.rr = 0.9,
+                   tx.halt.dur.rr = 0.5,
+                   tx.reinit.part.prob = c(0.00066, 0.00066, 0.00291),
                    tx.reinit.full.rr = 2.0,
                    tx.reinit.dur.rr = 5.0,
+                   aids.mr = 1/104,
+
+                   trans.scale = 1.10,
+                   acts.scale = 1.00,
                    acts.aids.vl = 5.75)
 init <- init_msm(prev.ugc = 0,
                  prev.rct = 0,
                  prev.rgc = 0,
                  prev.uct = 0)
 control <- control_msm(simno = 1,
-                       nsteps = 52*1,
+                       nsteps = 52*5,
                        nsims = 1,
                        ncores = 1,
                        save.nwstats = FALSE,
@@ -40,6 +45,8 @@ sim$param$acts.scale
 
 df <- as.data.frame(sim, out = "mean")
 names(df)
+
+df$cc.test.int
 
 par(mar = c(3,3,1,1), mgp = c(2,1,0))
 plot(sim, y = "i.prev", mean.smooth = FALSE, ylim = c(0, 1))
@@ -59,6 +66,8 @@ plot(sim, y = "cc.vsupp.tt1", mean.smooth = FALSE)
 plot(sim, y = "cc.vsupp.tt2", mean.smooth = FALSE)
 plot(sim, y = "cc.vsupp.tt3", mean.smooth = FALSE)
 plot(sim, y = "cc.vsupp.dur1y", mean.smooth = FALSE)
+
+plot(sim, y = "cc.test.int", mean.smooth = FALSE)
 
 plot(sim, y = "hstage.acute", mean.smooth = TRUE)
 plot(sim, y = "hstage.chronic", mean.smooth = FALSE)
