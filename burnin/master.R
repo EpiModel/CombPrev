@@ -5,9 +5,7 @@ library("EpiModelHPC")
 
 # Calibration/Testing -----------------------------------------------------
 
-vars <- list(HTRB = 0.330, HTRH = 0.325, HTRW = 0.480,
-             TIPB = 1.920, TIPH = 2.10, TIPW = 1.945,
-             THFRR = seq(0.5, 1, 0.1), THDRR = 0.1)
+vars <- list(THPP = 1.2)
 sbatch_master(vars = vars,
               master.file = "burnin/master.sh",
               runsim.file = "runsim.sh",
