@@ -6,7 +6,7 @@ source("burnin/post/fx.R")
 fn <- list.files("burnin/data", full.names = TRUE)
 cbind(fn)
 
-load(fn[1])
+load(fn[2])
 df <- as.data.frame(sim, out = "mean")
 names(df)
 
@@ -22,7 +22,8 @@ colMeans(tail(df[, c("i.prev.B", "i.prev.H", "i.prev.W")], 52))
 
 plot(sim, y = "i.prev.dx", ylim = 0:1)
 mean(tail(df$i.prev.dx, 52))
-plot(sim, y = c("i.prev.dx.B", "i.prev.dx.H", "i.prev.dx.W"), legend = TRUE, ylim = c(0, 1))
+plot(sim, y = c("i.prev.dx.B", "i.prev.dx.H", "i.prev.dx.W"), legend = TRUE, ylim = c(0, 0.4))
+abline(h = c(0.333, 0.127, 0.084), col = c("steelblue", "firebrick", "seagreen"), lty = 2)
 colMeans(tail(df[, c("i.prev.dx.B", "i.prev.dx.H", "i.prev.dx.W")], 52))
 
 

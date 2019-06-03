@@ -24,7 +24,7 @@ param <- param_msm(netstats = netstats,
                    tx.reinit.dur.rr = 5.0,
                    aids.mr = 1/104,
 
-                   trans.scale = 1.10,
+                   trans.scale = c(1.5, 1.0, 0.75),
                    acts.scale = 1.00,
                    acts.aids.vl = 5.75)
 init <- init_msm(prev.ugc = 0,
@@ -39,9 +39,6 @@ control <- control_msm(simno = 1,
                        save.clin.hist = FALSE)
 
 sim <- netsim(est, param, init, control)
-
-load("scripts/burnin/data/sim.n1007.rda")
-sim$param$acts.scale
 
 df <- as.data.frame(sim, out = "mean")
 names(df)
