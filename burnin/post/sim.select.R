@@ -3,51 +3,58 @@
 
 suppressMessages(library("EpiModelHIV"))
 suppressMessages(library("tidyverse"))
+suppressMessages(library("foreach"))
 
 list.files("data/")
-fn <- list.files("data/", full.names = TRUE)
+fn <- list.files("data/", pattern = "sim", full.names = TRUE)
 
-tdf <- data.frame(batch = NA, ir100.sti = NA, i.prev = NA)
-
-for (i in 1:length(fn)) {
+doParallel::registerDoParallel(32)
+tdf <- foreach(i = 1:length(fn)) %dopar% {
   load(fn[i])
-
-  for (j in 1:sim$control$nsims) {
+  f <- function(j) {
     df <- as.data.frame(x = sim, sim = j)
-    df <- select(df, ir100.sti, i.prev)
+    df <- select(df, i.prev.dx.B, i.prev.dx.H, i.prev.dx.W)
     df <- tail(df, 52)
     batch <- paste(paste(strsplit(fn[i], "[.]")[[1]][2:3], collapse = "."), j, sep = ".")
     out <- c(batch, colMeans(df))
-    tdf <- rbind(tdf, out)
+    return(out)
   }
-  cat("\nFile", fn[i], "complete ...")
-
-  if (i == length(fn)) {
-    tdf <- tdf[-1, ]
-    save(tdf, file = "data/tdf.rda")
-  }
+  t(sapply(1:sim$control$nsims, f))
 }
 
+tdf <- data.frame(do.call("rbind", tdf), stringsAsFactors = FALSE)
+head(tdf, 100); str(tdf)
+names(tdf)[1] <- "batch"
+tdf[2:4] <- sapply(tdf[2:4], as.numeric)
+save(tdf, file = "data/tdf.rda")
 
 load("data/tdf.rda")
-tdf$ir100.sti <- as.numeric(tdf$ir100.sti)
-tdf$i.prev <- as.numeric(tdf$i.prev)
-tdf_sel <- tdf[which(tdf$ir100.sti > 10.6 & tdf$ir100.sti < 11.0 &
-                     tdf$i.prev > 0.256 & tdf$i.prev < 0.265), ]
+tdf_sel <- tdf[which(tdf$i.prev.dx.B > 0.332 & tdf$i.prev.dx.B < 0.334 &    ## 0.333
+                     tdf$i.prev.dx.H > 0.126 & tdf$i.prev.dx.H < 0.128 &    ## 0.127
+                     tdf$i.prev.dx.W > 0.083 & tdf$i.prev.dx.W < 0.085), ]  ## 0.084
 tdf_sel
 
-load("data/sim.n1000.10.20190221.0809.rda")
-ls()
-s11 <- get_sims(sim, sims = 11)
+tdf_sel <- tdf[which(round(tdf$i.prev.dx.B, 2) == 0.33 &
+                     round(tdf$i.prev.dx.H, 3) == 0.127 &
+                     round(tdf$i.prev.dx.W, 3) == 0.084), ]
+tdf_sel
 
-df <- as.data.frame(s11)
-df <- select(df, ir100.sti, i.prev)
+#       batch         i.prev.dx.B i.prev.dx.H i.prev.dx.W
+# 10726 n1001.442.2   0.3327749   0.1267496  0.08396303
+
+load("data/sim.n1001.787.rda")
+ls()
+s1 <- get_sims(sim, sims = 25)
+
+df <- as.data.frame(s1)
+df <- select(df, i.prev.dx.B, i.prev.dx.H, i.prev.dx.W)
 df <- tail(df, 52)
 df
 colMeans(df)
 
 # Save as best-fitting
-sim <- s11
+sim <- s1
 
-save(sim, file = "est/burnin.netprep.rda", compress = "xz")
-
+saveRDS(sim, file = "est/burnin.ATL.3race.rda", compress = "xz")
+system("mv data/sim.n1001.787.rda data/hold/")
+system("mv data/tdf.rda data/hold/")

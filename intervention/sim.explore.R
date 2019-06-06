@@ -1,9 +1,10 @@
 
+
 library("EpiModelHIV")
 sim <- NULL
 source("burnin/post/fx.R")
 
-fn <- list.files("burnin/data", pattern = "sim", full.names = TRUE)
+fn <- list.files("intervention/data", pattern = "sim", full.names = TRUE)
 cbind(fn)
 
 load(fn[1])
@@ -131,7 +132,7 @@ plot(sim, y = "mean.tx.off")
 par(mar = c(3,3,1,1), mgp = c(2,1,0))
 all <- gather_netsim(fn)
 
-plot_netsim_list(all, var = "hstage.aids", ylim = c(0, 1))
+plot_netsim_list(all, var = "i.prev", ylim = c(0, 0.25))
 
 plot_netsim_list(all, var = "cc.HIV.mr", ylim = c(0, 0.1))
 
