@@ -43,7 +43,7 @@ init <- init_msm(prev.ugc = 0,
                  prev.uct = 0)
 control <- control_msm(simno = fsimno,
                        start = (52*60) + 1,
-                       nsteps = 52*66,
+                       nsteps = 52*65,
                        nsims = ncores,
                        ncores = ncores,
                        initialize.FUN = reinit_msm,
@@ -58,4 +58,4 @@ sim <- netsim(burnin, param, init, control)
 savesim(sim, save.min = FALSE, save.max = TRUE, time.stamp = FALSE)
 
 # process_simfiles(simno = simno, min.n = njobs, nsims = nsims,
-#                  truncate.at = 52*61)
+#                  truncate.at = 52*65)

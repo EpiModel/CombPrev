@@ -56,6 +56,7 @@ sim <- s1
 saveRDS(sim, file = "est/burnin.ATL.3race.rda", compress = "xz")
 
 # Hold the full netsim file
-system("mv data/sim.n200.715.rda data/hold/")
+load("data/sim.n200.715.rda")
+save(sim, file = "data/hold/sim.n200.715.rda", compress = "xz")
 
 # Reinstall EpiModelHIV before running interventions
