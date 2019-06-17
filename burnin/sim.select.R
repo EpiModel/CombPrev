@@ -12,7 +12,7 @@ list.files("data/")
 fn <- list.files("data/", pattern = "sim", full.names = TRUE)
 
 # Create outcome data frame for comparison
-doParallel::registerDoParallel(32)
+doParallel::registerDoParallel(parallel::detectCores())
 tdf <- foreach(i = 1:length(fn)) %dopar% {
   load(fn[i])
   f <- function(j) {
@@ -41,9 +41,9 @@ tdf$diff <- abs(tdf$i.prev.dx.B - targets[1]) +
 head(arrange(tdf, diff), 25)
 
 # Verify outcomes
-load("data/sim.nXXX.rda")
+load("data/sim.n200.715.rda")
 ls()
-s1 <- get_sims(sim, sims = 25)
+s1 <- get_sims(sim, sims = 20)
 
 df <- as.data.frame(s1)
 df <- select(df, i.prev.dx.B, i.prev.dx.H, i.prev.dx.W)
@@ -56,6 +56,6 @@ sim <- s1
 saveRDS(sim, file = "est/burnin.ATL.3race.rda", compress = "xz")
 
 # Hold the full netsim file
-system("mv data/sim.n1001.787.rda data/hold/")
+system("mv data/sim.n200.715.rda data/hold/")
 
 # Reinstall EpiModelHIV before running interventions
