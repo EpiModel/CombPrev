@@ -9,7 +9,7 @@ devtools::load_all("~/Dropbox/Dev/EpiModelHIV/EpiModelHIV-p")
 ## Parameters
 netstats <- readRDS("est/netstats.rda")
 epistats <- readRDS("est/epistats.rda")
-burnin <- readRDS("est/burnin.ATL.3race.rda")
+burnin <- readRDS("est/burnin.ATL.3race.Prep15.rda")
 
 param <- param_msm(netstats = netstats,
                    epistats = epistats,
@@ -29,10 +29,10 @@ param <- param_msm(netstats = netstats,
                    max.time.on.tx.part.int = 52 * 10,
                    max.time.off.tx.part.int = 52 * 10,
                    aids.mr = 1/250,
-                   trans.scale = c(2.64, 0.45, 0.285),
+                   trans.scale = c(2.77, 0.47, 0.29),
                    acts.scale = 1.00,
                    acts.aids.vl = 5.75,
-                   prep.start = (52*60)+1,
+                   prep.start = (52*60) + 1,
                    riskh.start = 52*59,
                    prep.start.prob = 0.66,
                    prep.require.lnt = TRUE,
@@ -42,7 +42,7 @@ init <- init_msm(prev.ugc = 0,
                  prev.rgc = 0,
                  prev.uct = 0)
 control <- control_msm(simno = 1,
-                       start = (52*60) + 1,
+                       start = (52*65) + 1,
                        nsteps = 52*75,
                        nsims = 1,
                        ncores = 1,
