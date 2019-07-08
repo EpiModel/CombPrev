@@ -1,11 +1,12 @@
 
-calc_quants_prev <- function(x, var, at = 520, qnt.low = 0.025, qnt.high = 0.975) {
+calc_quants_prev <- function(x, var, at = 520, mult = 1, round = 1, qnt.low = 0.025, qnt.high = 0.975) {
   if (is.null(x$epi[[var]])) {
     stop("var ", var, " does not exist on x", call. = FALSE)
   }
-  out <- as.numeric(x$epi[[var]][at, ])
-  out <- quantile(out, c(0.5, qnt.low, qnt.high), names = FALSE)*100
-  out <- sprintf("%.1f", out)
+  out <- as.numeric(x$epi[[var]][at, ])*mult
+  out <- quantile(out, c(0.5, qnt.low, qnt.high), names = FALSE)
+  format <- paste0("%.", round, "f")
+  out <- sprintf(format, out)
   out <- paste0(out[1], " (", out[2], ", ", out[3], ")")
   return(out)
 }
@@ -68,85 +69,10 @@ epi_stats <- function(sim.base,
                       qnt.low = 0.025,
                       qnt.high = 0.975) {
 
-  # Base scenario -------------------------------------------------------
-
-  # HIV- tests per year
-  names(sim.base$epi)
-  out <- tail(x$epi[["mean.neg.tests"]], 1)/10
-  out <- quantile(out, c(0.5, qnt.low, qnt.high), names = FALSE)
-
-  out <- tail(x$epi[["mean.neg.tests.B"]], 1)/10
-  out <- quantile(out, c(0.5, qnt.low, qnt.high), names = FALSE)
-
-  # HIV- tested in past year
-  pytest.base <- calc_quants_prev(sim.base, "test.past.year", at, qnt.low, qnt.high)
-  pytest.base.B <- calc_quants_prev(sim.base, "test.past.year.B", at, qnt.low, qnt.high)
-  pytest.base.H <- calc_quants_prev(sim.base, "test.past.year.H", at, qnt.low, qnt.high)
-  pytest.base.W <- calc_quants_prev(sim.base, "test.past.year.W", at, qnt.low, qnt.high)
-
-  # PrEP coverage
-
-
-  # HIV+ diagnosed
-
-
-  # HIV+ diagnostic delay
-
-
-
-  # prevalence
-  prev.base <- calc_quants_prev(sim.base, "i.prev", at, qnt.low, qnt.high)
-  prev.base.B <- calc_quants_prev(sim.base, "i.prev.B", at, qnt.low, qnt.high)
-  prev.base.H <- calc_quants_prev(sim.base, "i.prev.H", at, qnt.low, qnt.high)
-  prev.base.W <- calc_quants_prev(sim.base, "i.prev.W", at, qnt.low, qnt.high)
-
-  # diagnosed prevalence
-  prev.dx.base <- calc_quants_prev(sim.base, "i.prev.dx", at, qnt.low, qnt.high)
-  prev.dx.base.B <- calc_quants_prev(sim.base, "i.prev.dx.B", at, qnt.low, qnt.high)
-  prev.dx.base.H <- calc_quants_prev(sim.base, "i.prev.dx.H", at, qnt.low, qnt.high)
-  prev.dx.base.W <- calc_quants_prev(sim.base, "i.prev.dx.W", at, qnt.low, qnt.high)
-
-  # raw incidence
-  incid.base <- calc_quants_ir(sim.base, "incid", qnt.low, qnt.high)
-  incid.base.B <- calc_quants_ir(sim.base, "incid.B", qnt.low, qnt.high)
-  incid.base.H <- calc_quants_ir(sim.base, "incid.H", qnt.low, qnt.high)
-  incid.base.W <- calc_quants_ir(sim.base, "incid.W", qnt.low, qnt.high)
-
-  # incidence rate
-  ir100.base <- calc_quants_ir(sim.base, "ir100", qnt.low, qnt.high)
-  ir100.base.B <- calc_quants_ir(sim.base, "ir100.B", qnt.low, qnt.high)
-  ir100.base.H <- calc_quants_ir(sim.base, "ir100.H", qnt.low, qnt.high)
-  ir100.base.W <- calc_quants_ir(sim.base, "ir100.W", qnt.low, qnt.high)
-
-
-  # Comparison scenario -------------------------------------------------
-
-  if (!is.null(sim.comp)) {
-
-    # prevalence
-    prev.comp <- calc_quants_prev(sim.comp, "i.prev", at, qnt.low, qnt.high)
-    prev.comp.B <- calc_quants_prev(sim.comp, "i.prev.B", at, qnt.low, qnt.high)
-    prev.comp.H <- calc_quants_prev(sim.comp, "i.prev.H", at, qnt.low, qnt.high)
-    prev.comp.W <- calc_quants_prev(sim.comp, "i.prev.W", at, qnt.low, qnt.high)
-
-    # diagnosed prevalence
-    prev.dx.comp <- calc_quants_prev(sim.comp, "i.prev.dx", at, qnt.low, qnt.high)
-    prev.dx.comp.B <- calc_quants_prev(sim.comp, "i.prev.dx.B", at, qnt.low, qnt.high)
-    prev.dx.comp.H <- calc_quants_prev(sim.comp, "i.prev.dx.H", at, qnt.low, qnt.high)
-    prev.dx.comp.W <- calc_quants_prev(sim.comp, "i.prev.dx.W", at, qnt.low, qnt.high)
-
-    # incidence rate
-    ir100.comp <- calc_quants_ir(sim.comp, "ir100", qnt.low, qnt.high)
-    ir100.comp.B <- calc_quants_ir(sim.comp, "ir100.B", qnt.low, qnt.high)
-    ir100.comp.H <- calc_quants_ir(sim.comp, "ir100.H", qnt.low, qnt.high)
-    ir100.comp.W <- calc_quants_ir(sim.comp, "ir100.W", qnt.low, qnt.high)
-
-    # raw incidence
-    incid.comp <- calc_quants_ir(sim.comp, "incid", qnt.low, qnt.high)
-    incid.comp.B <- calc_quants_ir(sim.comp, "incid.B", qnt.low, qnt.high)
-    incid.comp.H <- calc_quants_ir(sim.comp, "incid.H", qnt.low, qnt.high)
-    incid.comp.W <- calc_quants_ir(sim.comp, "incid.W", qnt.low, qnt.high)
-
+  if (is.null(sim.comp)) {
+    x <- sim.base
+  } else {
+    x <- sim.comp
     # hazard ratio
     hr <- calc_quants_hr(sim.base, sim.comp, "ir100", qnt.low, qnt.high)
     hr.B <- calc_quants_hr(sim.base, sim.comp, "ir100.B", qnt.low, qnt.high)
@@ -158,32 +84,93 @@ epi_stats <- function(sim.base,
     ia.B <- calc_quants_ia(sim.base, sim.comp, "incid.B", qnt.low, qnt.high)
     ia.H <- calc_quants_ia(sim.base, sim.comp, "incid.H", qnt.low, qnt.high)
     ia.W <- calc_quants_ia(sim.base, sim.comp, "incid.W", qnt.low, qnt.high)
+  }
 
-  # Counterfactual Model Table
-    dat <- rbind(prev.comp, prev.comp.B, prev.comp.H, prev.comp.W,
-                 prev.dx.comp, prev.dx.comp.B, prev.dx.comp.H, prev.dx.comp.W,
-                 incid.comp, incid.comp.B, incid.comp.H, incid.comp.W,
-                 ir100.comp, ir100.comp.B, ir100.comp.H, ir100.comp.W,
-                 hr, hr.B, hr.H, hr.W,
-                 nia = ia$nia, nia.B = ia.B$nia, nia.H = ia.H$nia, nia.W = ia.W$nia,
-                 pia = ia$pia, pia.B = ia.B$pia, pia.H = ia.H$pia, pia.W = ia.W$pia)
+  # HIV- tests per year
+  testspy <- calc_quants_prev(x, "mean.neg.tests", at, 1/10, 2, qnt.low, qnt.high)
+  testspy.B <- calc_quants_prev(x, "mean.neg.tests.B", at, 1/10, 2, qnt.low, qnt.high)
+  testspy.H <- calc_quants_prev(x, "mean.neg.tests.H", at, 1/10, 2, qnt.low, qnt.high)
+  testspy.W <- calc_quants_prev(x, "mean.neg.tests.W", at, 1/10, 2, qnt.low, qnt.high)
+
+  # HIV- tested in past year
+  pytest <- calc_quants_prev(x, "test.past.year", at, 100, 1, qnt.low, qnt.high)
+  pytest.B <- calc_quants_prev(x, "test.past.year.B", at, 100, 1, qnt.low, qnt.high)
+  pytest.H <- calc_quants_prev(x, "test.past.year.H", at, 100, 1, qnt.low, qnt.high)
+  pytest.W <- calc_quants_prev(x, "test.past.year.W", at, 100, 1, qnt.low, qnt.high)
+
+  # PrEP coverage
+  x <- mutate_epi(x, pFrac = prepCurr / prepElig,
+                     pFrac.B = prepCurr.B / prepElig.B,
+                     pFrac.H = prepCurr.H / prepElig.H,
+                     pFrac.W = prepCurr.W / prepElig.W)
+  prep <- calc_quants_prev(x, "pFrac", at, 100, 1, qnt.low, qnt.high)
+  prep.B <- calc_quants_prev(x, "pFrac.B", at, 100, 1, qnt.low, qnt.high)
+  prep.H <- calc_quants_prev(x, "pFrac.H", at, 100, 1, qnt.low, qnt.high)
+  prep.W <- calc_quants_prev(x, "pFrac.W", at, 100, 1, qnt.low, qnt.high)
+
+  # HIV+ diagnosed
+  dx <- calc_quants_prev(x, "cc.dx", at, 100, 1, qnt.low, qnt.high)
+  dx.B <- calc_quants_prev(x, "cc.dx.B", at, 100, 1, qnt.low, qnt.high)
+  dx.H <- calc_quants_prev(x, "cc.dx.H", at, 100, 1, qnt.low, qnt.high)
+  dx.W <- calc_quants_prev(x, "cc.dx.W", at, 100, 1, qnt.low, qnt.high)
+
+  # HIV+ diagnostic delay
+  dx.delay <- calc_quants_prev(x, "cc.dx.delay.int", at, 1/52, 2, qnt.low, qnt.high)
+  dx.delay.B <- calc_quants_prev(x, "cc.dx.delay.int.B", at, 1/52, 2, qnt.low, qnt.high)
+  dx.delay.H <- calc_quants_prev(x, "cc.dx.delay.int.H", at, 1/52, 2, qnt.low, qnt.high)
+  dx.delay.W <- calc_quants_prev(x, "cc.dx.delay.int.W", at, 1/52, 2, qnt.low, qnt.high)
+
+  # HIV+ viral suppression
+  vl.supp <-
+
+  # prevalence
+  prev <- calc_quants_prev(x, "i.prev", at, 100, 1, qnt.low, qnt.high)
+  prev.B <- calc_quants_prev(x, "i.prev.B", at, 100, 1, qnt.low, qnt.high)
+  prev.H <- calc_quants_prev(x, "i.prev.H", at, 100, 1, qnt.low, qnt.high)
+  prev.W <- calc_quants_prev(x, "i.prev.W", at, 100, 1, qnt.low, qnt.high)
+
+  # diagnosed prevalence
+  prev.dx <- calc_quants_prev(x, "i.prev.dx", at, 100, 1, qnt.low, qnt.high)
+  prev.dx.B <- calc_quants_prev(x, "i.prev.dx.B", at, 100, 1, qnt.low, qnt.high)
+  prev.dx.H <- calc_quants_prev(x, "i.prev.dx.H", at, 100, 1, qnt.low, qnt.high)
+  prev.dx.W <- calc_quants_prev(x, "i.prev.dx.W", at, 100, 1, qnt.low, qnt.high)
+
+  # raw incidence
+  incid <- calc_quants_ir(x, "incid", qnt.low, qnt.high)
+  incid.B <- calc_quants_ir(x, "incid.B", qnt.low, qnt.high)
+  incid.H <- calc_quants_ir(x, "incid.H", qnt.low, qnt.high)
+  incid.W <- calc_quants_ir(x, "incid.W", qnt.low, qnt.high)
+
+  # incidence rate
+  ir100 <- calc_quants_ir(x, "ir100", qnt.low, qnt.high)
+  ir100.B <- calc_quants_ir(x, "ir100.B", qnt.low, qnt.high)
+  ir100.H <- calc_quants_ir(x, "ir100.H", qnt.low, qnt.high)
+  ir100.W <- calc_quants_ir(x, "ir100.W", qnt.low, qnt.high)
 
 
+  # Comparison scenario -------------------------------------------------
+
+  if (is.null(sim.comp)) {
+    dat <- cbind(ir100, pia = NA,
+                 ir100.B, pia.B = NA,
+                 ir100.H, pia.H = NA,
+                 ir100.W, pia.W = NA,
+                 testspy, pytest, prep, dx, dx.delay,
+                 testspy.B, pytest.B, prep.B, dx.B, dx.delay.B,
+                 testspy.H, pytest.H, prep.H, dx.H, dx.delay.H,
+                 testspy.W, pytest.W, prep.W, dx.W, dx.delay.W)
   } else {
-
-  # Reference Model Table
-  dat <- rbind(prev.base, prev.base.B, prev.base.H, prev.base.W,
-               prev.dx.base, prev.dx.base.B, prev.dx.base.H, prev.dx.base.W,
-               incid.base, incid.base.B, incid.base.H, incid.base.W,
-               ir100.base, ir100.base.B, ir100.base.H, ir100.base.W)
-
+    dat <- cbind(ir100, pia = ia$pia,
+                 ir100.B, pia.B = ia.B$pia,
+                 ir100.H, pia.H = ia.H$pia,
+                 ir100.W, pia.W = ia.W$pia,
+                 testspy, pytest, prep, dx, dx.delay,
+                 testspy.B, pytest.B, prep.B, dx.B, dx.delay.B,
+                 testspy.H, pytest.H, prep.H, dx.H, dx.delay.H,
+                 testspy.W, pytest.W, prep.W, dx.W, dx.delay.W)
   }
 
   out <- as.data.frame(dat, stringsAsFactors = FALSE)
-  out$var <- row.names(dat)
-  names(out)[1] <- "outcome"
-  out <- out[, c("var", "outcome")]
-  row.names(out) <- 1:nrow(out)
 
   return(out)
 }

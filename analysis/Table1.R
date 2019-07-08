@@ -1,46 +1,61 @@
 
 suppressWarnings(library("EpiModelHIV"))
-source("analysis/fx.R")
+source("fx.R")
+library("tidyverse")
 
 ## CombPrev Table 1
 
 ## Reference Scenario
-load("intervention/data/sim.n1000.rda")
+load("data/sim.n1000.rda")
 sim.base <- sim
 sim.base$param$hiv.test.rate
-a <- epi_stats(sim.base)
-write_csv(a, "analysis/T1ref.csv")
+( ref <- epi_stats(sim.base) )
 
-# Testing rates * 1.25
-load("intervention/data/sim.n1002.rda")
-sim.comp <- sim
-sim.comp$param$hiv.test.rate/sim.base$param$hiv.test.rate
-cf1 <- epi_stats(sim.base, sim.comp)
+cf.sims <- 1001:1021
+for (i in 1:length(cf.sims)) {
+  fn <- list.files(path = "data/",
+                   pattern = as.character(cf.sims[i]), full.names = TRUE)
+  load(fn)
+  sim.comp <- sim
+  cf <- epi_stats(sim.base, sim.comp)
+  if (i == 1) {
+    t1set <- cf
+  } else {
+    t1set <- rbind(t1set, cf)
+  }
+  cat("File", fn, "complete ... \n")
+}
 
-# Testing rates * 1.50
-load("intervention/data/sim.n1003.rda")
-sim.comp <- sim
-sim.comp$param$hiv.test.rate/sim.base$param$hiv.test.rate
-cf2 <- epi_stats(sim.base, sim.comp)
+t1 <- full_join(ref, t1set)
+t1 <- add_column(t1, scenario = 1000:1021, .before = 1)
 
-# Testing rates * 1.75
-load("intervention/data/sim.n1004.rda")
-sim.comp <- sim
-sim.comp$param$hiv.test.rate/sim.base$param$hiv.test.rate
-cf3 <- epi_stats(sim.base, sim.comp)
+write_csv(t1, "T1.csv")
 
-# Testing rates * 2
-load("intervention/data/sim.n1005.rda")
-sim.comp <- sim
-sim.comp$param$hiv.test.rate/sim.base$param$hiv.test.rate
-cf4 <- epi_stats(sim.base, sim.comp)
 
-# Annual testing
-load("intervention/data/sim.n1006.rda")
-sim.comp <- sim
-sim.comp$param$hiv.test.rate/sim.base$param$hiv.test.rate
-cf5 <- epi_stats(sim.base, sim.comp)
+## CombPrev Table 2
 
-set1 <- cbind(cf1, cf2[, 2], cf3[, 2], cf4[, 2], cf5[, 2])
-names(set1)[2:6] <- c("r1.25", "r1.5", "r1.75", "r2", "ann")
-write_csv(set1, "analysis/T1-cf-set1.csv")
+## Reference Scenario
+load("data/sim.n2000.rda")
+sim.base <- sim
+sim.base$param$hiv.test.rate
+( ref <- epi_stats(sim.base) )
+
+cf.sims <- 2001:2021
+for (i in 1:length(cf.sims)) {
+  fn <- list.files(path = "data/",
+                   pattern = as.character(cf.sims[i]), full.names = TRUE)
+  load(fn)
+  sim.comp <- sim
+  cf <- epi_stats(sim.base, sim.comp)
+  if (i == 1) {
+    t1set <- cf
+  } else {
+    t1set <- rbind(t1set, cf)
+  }
+  cat("File", fn, "complete ... \n")
+}
+
+t1 <- full_join(ref, t1set)
+t1 <- add_column(t1, scenario = 2000:2021, .before = 1)
+
+write_csv(t1, "T2.csv")

@@ -11,7 +11,7 @@ suppressMessages(library("ARTnet"))
 epistats <- build_epistats(city_name = "Atlanta")
 saveRDS(epistats, file = "est/epistats.rda")
 netparams <- build_netparams(epistats = epistats, smooth.main.dur.55p = TRUE)
-netstats <- build_netstats(epistats, netparams, expect.mort = 0.000478213)
+netstats <- build_netstats(epistats, netparams, expect.mort = 0.000478213, network.size = 100000)
 saveRDS(netstats, file = "est/netstats.rda")
 
 

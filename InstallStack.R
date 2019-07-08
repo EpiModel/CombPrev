@@ -37,14 +37,14 @@ sessioninfo::package_info(pkgs = c("network", "networkDynamic", "statnet.common"
                                    "tergmLite", "EpiABC", "EpiModelHIV",
                                    "ARTnetData", "ARTnet"), dependencies = FALSE)
 
-# June 17 2019
+# June 19 2019
 # package        * version     date       lib source
 # ARTnet           1.0.0       2019-05-27 [1] Github (EpiModel/ARTnet@150c631)
 # ARTnetData       1.0         2019-06-17 [1] Github (EpiModel/ARTnetData@1d8ec6e)
 # EpiABC           1.0         2019-05-16 [1] Github (EpiModel/EpiABC@c32ecb6)
 # EpiModel       * 1.7.3       2019-05-03 [1] Github (statnet/EpiModel@2c131f0)
-# EpiModelHIV    * 1.5.0       2019-06-17 [1] Github (EpiModel/EpiModelHIV-p@b8d6e1f)
-# EpiModelHPC    * 2.0.1       2019-06-17 [1] Github (statnet/EpiModelHPC@74cede4)
+# EpiModelHIV    * 1.5.0       2019-06-19 [1] Github (EpiModel/EpiModelHIV-p@504798a)
+# EpiModelHPC    * 2.0.2       2019-06-19 [1] Github (statnet/EpiModelHPC@a64dbf2)
 # ergm           * 3.10.0-4851 2019-05-24 [1] Github (statnet/ergm@8b30e92)
 # network        * 1.14-377    2019-05-24 [1] Github (statnet/network@deff2a0)
 # networkDynamic * 0.10        2019-05-24 [1] Github (statnet/networkDynamic@14182bf)

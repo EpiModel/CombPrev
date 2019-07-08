@@ -97,14 +97,14 @@ mean(tail(df$R0.mean.cs, 52))
 
 # Testing/Timing ------------------------------------------------------
 
-m <- microbenchmark::microbenchmark(f(dat, at = 2))
+m <- microbenchmark::microbenchmark(simnet_msm(dat, at = 2))
 print(m, unit = "ms")
 
 profvis::profvis(f(dat, at = 2), interval = 0.005)
 
 dat <- initialize_msm(est, param, init, control, s = 1)
 
-for (at in 2:200) {
+for (at in 2:52) {
   dat <- aging_msm(dat, at) # 1 ms
   dat <- departure_msm(dat, at) # 10 ms
   dat <- arrival_msm(dat, at) # 7 ms
