@@ -9,7 +9,7 @@ scp analysis/fx.R mox:/gscratch/csde/sjenness/combprev
 
 
 # Receive
-scp mox:/gscratch/csde/sjenness/combprev/data/hold/sim.n30*.rda intervention/data/
+scp mox:/gscratch/csde/sjenness/combprev/data/*.rda intervention/data/
 scp mox:/gscratch/csde/sjenness/combprev/data/*.csv analysis/
 
 
