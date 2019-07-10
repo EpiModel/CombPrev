@@ -1,61 +1,54 @@
 
 suppressWarnings(library("EpiModelHIV"))
-source("fx.R")
+source("analysis/fx.R")
 library("tidyverse")
+library("foreach")
 
 ## CombPrev Table 1
 
 ## Reference Scenario
-load("data/sim.n1000.rda")
+load("intervention/data/sim.n1000.rda")
 sim.base <- sim
-sim.base$param$hiv.test.rate
-( ref <- epi_stats(sim.base) )
+ref <- epi_stats(sim.base, otable = 1)
+ref
 
 cf.sims <- 1001:1021
-for (i in 1:length(cf.sims)) {
-  fn <- list.files(path = "data/",
+doParallel::registerDoParallel(parallel::detectCores())
+t1set <- foreach(i = 1:length(cf.sims)) %dopar% {
+  fn <- list.files(path = "intervention/data/",
                    pattern = as.character(cf.sims[i]), full.names = TRUE)
   load(fn)
   sim.comp <- sim
-  cf <- epi_stats(sim.base, sim.comp)
-  if (i == 1) {
-    t1set <- cf
-  } else {
-    t1set <- rbind(t1set, cf)
-  }
-  cat("File", fn, "complete ... \n")
+  epi_stats(sim.base, sim.comp, otable = 1)
 }
-
+t1set <- do.call("rbind", t1set)
 t1 <- full_join(ref, t1set)
 t1 <- add_column(t1, scenario = 1000:1021, .before = 1)
+t1
 
-write_csv(t1, "T1.csv")
+write_csv(t1, "analysis/T1.csv")
 
 
 ## CombPrev Table 2
 
 ## Reference Scenario
-load("data/sim.n2000.rda")
+load("intervention/data/sim.n2000.rda")
 sim.base <- sim
-sim.base$param$hiv.test.rate
-( ref <- epi_stats(sim.base) )
+ref <- epi_stats(sim.base, otable = 2)
+ref
 
 cf.sims <- 2001:2021
-for (i in 1:length(cf.sims)) {
-  fn <- list.files(path = "data/",
+doParallel::registerDoParallel(parallel::detectCores())
+t2set <- foreach(i = 1:length(cf.sims)) %dopar% {
+  fn <- list.files(path = "intervention/data/",
                    pattern = as.character(cf.sims[i]), full.names = TRUE)
   load(fn)
   sim.comp <- sim
-  cf <- epi_stats(sim.base, sim.comp)
-  if (i == 1) {
-    t1set <- cf
-  } else {
-    t1set <- rbind(t1set, cf)
-  }
-  cat("File", fn, "complete ... \n")
+  epi_stats(sim.base, sim.comp, otable = 2)
 }
+t2set <- do.call("rbind", t2set)
 
-t1 <- full_join(ref, t1set)
-t1 <- add_column(t1, scenario = 2000:2021, .before = 1)
+t2 <- full_join(ref, t2set)
+t2 <- add_column(t2, scenario = 2000:2021, .before = 1)
 
-write_csv(t1, "T2.csv")
+write_csv(t2, "analysis/T2.csv")
