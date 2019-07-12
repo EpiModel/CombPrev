@@ -65,6 +65,7 @@ calc_quants_ia <- function(x.base, x.comp, var, qnt.low = 0.025, qnt.high = 0.97
 
 epi_stats <- function(sim.base,
                       sim.comp = NULL,
+                      otable,
                       at = 520,
                       qnt.low = 0.025,
                       qnt.high = 0.975) {
@@ -121,7 +122,21 @@ epi_stats <- function(sim.base,
   dx.delay.W <- calc_quants_prev(x, "cc.dx.delay.int.W", at, 1/52, 2, qnt.low, qnt.high)
 
   # HIV+ viral suppression
-  vl.supp <-
+  vl.supp <- calc_quants_prev(x, "cc.vsupp", at, 100, 1, qnt.low, qnt.high)
+  vl.supp.B <- calc_quants_prev(x, "cc.vsupp.B", at, 100, 1, qnt.low, qnt.high)
+  vl.supp.H <- calc_quants_prev(x, "cc.vsupp.H", at, 100, 1, qnt.low, qnt.high)
+  vl.supp.W <- calc_quants_prev(x, "cc.vsupp.W", at, 100, 1, qnt.low, qnt.high)
+
+  vl.supp.all <- calc_quants_prev(x, "cc.vsupp.all", at, 100, 1, qnt.low, qnt.high)
+  vl.supp.all.B <- calc_quants_prev(x, "cc.vsupp.all.B", at, 100, 1, qnt.low, qnt.high)
+  vl.supp.all.H <- calc_quants_prev(x, "cc.vsupp.all.H", at, 100, 1, qnt.low, qnt.high)
+  vl.supp.all.W <- calc_quants_prev(x, "cc.vsupp.all.W", at, 100, 1, qnt.low, qnt.high)
+
+  # Linked in 1 month
+  link1m <- calc_quants_prev(x, "cc.linked1m.int", at, 100, 1, qnt.low, qnt.high)
+  link1m.B <- calc_quants_prev(x, "cc.linked1m.int.B", at, 100, 1, qnt.low, qnt.high)
+  link1m.H <- calc_quants_prev(x, "cc.linked1m.int.H", at, 100, 1, qnt.low, qnt.high)
+  link1m.W <- calc_quants_prev(x, "cc.linked1m.int.W", at, 100, 1, qnt.low, qnt.high)
 
   # prevalence
   prev <- calc_quants_prev(x, "i.prev", at, 100, 1, qnt.low, qnt.high)
@@ -148,29 +163,92 @@ epi_stats <- function(sim.base,
   ir100.W <- calc_quants_ir(x, "ir100.W", qnt.low, qnt.high)
 
 
-  # Comparison scenario -------------------------------------------------
+  # Table Output -------------------------------------------------
 
-  if (is.null(sim.comp)) {
-    dat <- cbind(ir100, pia = NA,
-                 ir100.B, pia.B = NA,
-                 ir100.H, pia.H = NA,
-                 ir100.W, pia.W = NA,
-                 testspy, pytest, prep, dx, dx.delay,
-                 testspy.B, pytest.B, prep.B, dx.B, dx.delay.B,
-                 testspy.H, pytest.H, prep.H, dx.H, dx.delay.H,
-                 testspy.W, pytest.W, prep.W, dx.W, dx.delay.W)
-  } else {
-    dat <- cbind(ir100, pia = ia$pia,
-                 ir100.B, pia.B = ia.B$pia,
-                 ir100.H, pia.H = ia.H$pia,
-                 ir100.W, pia.W = ia.W$pia,
-                 testspy, pytest, prep, dx, dx.delay,
-                 testspy.B, pytest.B, prep.B, dx.B, dx.delay.B,
-                 testspy.H, pytest.H, prep.H, dx.H, dx.delay.H,
-                 testspy.W, pytest.W, prep.W, dx.W, dx.delay.W)
+  if (otable %in% 1:2) {
+    if (is.null(sim.comp)) {
+      dat <- cbind(ir100, pia = NA,
+                   ir100.B, pia.B = NA,
+                   ir100.H, pia.H = NA,
+                   ir100.W, pia.W = NA,
+                   testspy, pytest, prep, dx, dx.delay,
+                   testspy.B, pytest.B, prep.B, dx.B, dx.delay.B,
+                   testspy.H, pytest.H, prep.H, dx.H, dx.delay.H,
+                   testspy.W, pytest.W, prep.W, dx.W, dx.delay.W)
+    } else {
+      dat <- cbind(ir100, pia = ia$pia,
+                   ir100.B, pia.B = ia.B$pia,
+                   ir100.H, pia.H = ia.H$pia,
+                   ir100.W, pia.W = ia.W$pia,
+                   testspy, pytest, prep, dx, dx.delay,
+                   testspy.B, pytest.B, prep.B, dx.B, dx.delay.B,
+                   testspy.H, pytest.H, prep.H, dx.H, dx.delay.H,
+                   testspy.W, pytest.W, prep.W, dx.W, dx.delay.W)
+    }
+  }
+  if (otable %in% 3:4) {
+    if (is.null(sim.comp)) {
+      dat <- cbind(ir100, pia = NA,
+                   ir100.B, pia.B = NA,
+                   ir100.H, pia.H = NA,
+                   ir100.W, pia.W = NA,
+                   link1m, vl.supp, vl.supp.all,
+                   link1m.B, vl.supp.B, vl.supp.all.B,
+                   link1m.H, vl.supp.H, vl.supp.all.H,
+                   link1m.W, vl.supp.W, vl.supp.all.W)
+    } else {
+      dat <- cbind(ir100, pia = ia$pia,
+                   ir100.B, pia.B = ia.B$pia,
+                   ir100.H, pia.H = ia.H$pia,
+                   ir100.W, pia.W = ia.W$pia,
+                   link1m, vl.supp, vl.supp.all,
+                   link1m.B, vl.supp.B, vl.supp.all.B,
+                   link1m.H, vl.supp.H, vl.supp.all.H,
+                   link1m.W, vl.supp.W, vl.supp.all.W)
+    }
   }
 
   out <- as.data.frame(dat, stringsAsFactors = FALSE)
 
   return(out)
+}
+
+
+gather_netsim <- function(fn) {
+  for (i in seq_along(fn)) {
+    if (i == 1) {
+      out <- list()
+    }
+    load(fn[i])
+    out[[i]] <- sim
+    cat("\nFile", fn[i], "complete")
+  }
+  class(out) <- "netsim.list"
+  return(out)
+}
+
+plot_netsim_list <- function(x, var, ylim) {
+
+  pal <- brewer_ramp(n = length(x), plt = "Set1", delete.lights = TRUE)
+
+  if (class(x) == "netsim.list") {
+    for (i in seq_along(x)) {
+      if (i == 1) {
+        plot(x[[i]], y = var, mean.col = pal[i], qnts = FALSE, ylim = ylim)
+      } else {
+        plot(x[[i]], y = var, mean.col = pal[i], qnts = FALSE, add = TRUE)
+      }
+    }
+  } else {
+    for (i in seq_along(x)) {
+      load(x[i])
+      if (i == 1) {
+        plot(sim, y = var, mean.col = pal[i], qnts = FALSE, ylim = ylim)
+      } else {
+        plot(sim, y = var, mean.col = pal[i], qnts = FALSE, add = TRUE)
+      }
+    }
+  }
+  legend("topleft", legend = paste("Run", seq_along(x)), lty = 1, lwd = 2,
+         cex = 0.8, bty = "n", col = pal)
 }

@@ -5,7 +5,8 @@ suppressMessages(library("EpiModelHIV"))
 
 ## Environmental Arguments
 pull_env_vars(num.vars = c("HTRB", "HTRH", "HTRW",
-                           "TIPB", "TIPH", "TIPW"),
+                           "TIPB", "TIPH", "TIPW",
+                           "TTFB", "TTFH", "TTFW"),
               logic.vars = "LNT")
 
 ## Parameters
@@ -24,8 +25,8 @@ param <- param_msm(netstats = netstats,
                    hiv.test.rate = c(HTRB, HTRH, HTRW),
                    hiv.test.late.prob = c(0, 0, 0),
                    tx.init.prob = c(TIPB, TIPH, TIPW),
-                   tt.part.supp = c(0.45, 0.40, 0.28),
-                   tt.full.supp = c(0.55, 0.60, 0.72),
+                   tt.part.supp = c(1-TTFB, 1-TTFH, 1-TTFW),
+                   tt.full.supp = c(TTFB, TTFH, TTFW),
                    tt.dur.supp = c(0, 0, 0),
                    tx.halt.part.prob = c(0.009, 0.0084, 0.00768),
                    tx.halt.full.rr = c(0.45, 0.45, 0.45),
