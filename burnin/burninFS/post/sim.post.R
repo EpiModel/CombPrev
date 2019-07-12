@@ -3,15 +3,13 @@ library("EpiModelHIV")
 sim <- NULL
 source("burnin/post/fx.R")
 
-fn <- list.files("burnin/data", pattern = "sim", full.names = TRUE)
+fn <- list.files("burnin/burninFS/data", pattern = "sim", full.names = TRUE)
 cbind(fn)
 
 load(fn[1])
 # sim <- truncate_sim(sim, at = 52*60)
 df <- as.data.frame(sim, out = "mean")
 names(df)
-
-
 
 # Single scenario
 
@@ -28,8 +26,6 @@ mean(tail(df$i.prev.dx, 52))
 plot(sim, y = c("i.prev.dx.B", "i.prev.dx.H", "i.prev.dx.W"), legend = TRUE, ylim = c(0, 0.4))
 abline(h = c(0.333, 0.127, 0.084), col = c("steelblue", "firebrick", "seagreen"), lty = 2)
 colMeans(tail(df[, c("i.prev.dx.B", "i.prev.dx.H", "i.prev.dx.W")], 52))
-
-
 
 plot(sim, y = "ir100")
 plot(sim, y = "num")

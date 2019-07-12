@@ -17,8 +17,8 @@ param <- param_msm(netstats = netstats,
                    hiv.test.rate = c(0.00432, 0.00425, 0.00730),
                    hiv.test.late.prob = c(0, 0, 0),
                    tx.init.prob = c(0.1775, 0.190, 0.2521),
-                   tt.part.supp = c(0.45, 0.40, 0.28),
-                   tt.full.supp = c(0.55, 0.60, 0.72),
+                   tt.part.supp = c(0, 0, 0),
+                   tt.full.supp = c(1, 1, 1),
                    tt.dur.supp = c(0, 0, 0),
                    tx.halt.part.prob = c(0.009, 0.0084, 0.00768),
                    tx.halt.full.rr = c(0.45, 0.45, 0.45),
@@ -51,8 +51,8 @@ control <- control_msm(simno = fsimno,
 
 ## Simulation
 sim <- netsim(est, param, init, control)
-# savesim(sim, save.min = TRUE, save.max = FALSE, compress = FALSE)
-savesim(sim, save.min = FALSE, save.max = TRUE, compress = TRUE, time.stamp = FALSE)
+savesim(sim, save.min = TRUE, save.max = FALSE, compress = FALSE)
+# savesim(sim, save.min = FALSE, save.max = TRUE, compress = TRUE, time.stamp = FALSE)
 
 # Merging
-# process_simfiles(simno = simno, min.n = njobs, nsims = nsims)
+process_simfiles(simno = simno, min.n = njobs, nsims = nsims)
