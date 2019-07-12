@@ -186,6 +186,7 @@ epi_stats <- function(sim.base,
                    testspy.W, pytest.W, prep.W, dx.W, dx.delay.W)
     }
   }
+
   if (otable %in% 3:4) {
     if (is.null(sim.comp)) {
       dat <- cbind(ir100, pia = NA,

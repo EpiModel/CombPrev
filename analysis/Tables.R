@@ -105,5 +105,3 @@ t4 <- add_column(t4, scenario = 4000:4006, .before = 1)
 t4
 
 write_csv(t4, "analysis/T4.csv")
-
-
