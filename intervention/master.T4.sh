@@ -1,0 +1,9 @@
+#!/bin/bash
+
+sbatch -p ckpt -A csde-ckpt --array=1-36 --nodes=1 --ntasks-per-node=28 --time=00:30:00 --mem=100G --job-name=s4000 --export=ALL,SIMNO=4000,NJOBS=36,NSIMS=1000,HTRB=0.00432,HTRH=0.00425,HTRW=0.0073,LNT=TRUE,TIPB=0.1775,TIPH=0.19,TIPW=0.2521,TTFB=0.72,TTFH=0.72,TTFW=0.72 runsim.sh
+sbatch -p ckpt -A csde-ckpt --array=1-36 --nodes=1 --ntasks-per-node=28 --time=00:30:00 --mem=100G --job-name=s4001 --export=ALL,SIMNO=4001,NJOBS=36,NSIMS=1000,HTRB=0.00432,HTRH=0.00425,HTRW=0.0073,LNT=TRUE,TIPB=0.1775,TIPH=0.19,TIPW=0.2521,TTFB=0.75,TTFH=0.75,TTFW=0.75 runsim.sh
+sbatch -p ckpt -A csde-ckpt --array=1-36 --nodes=1 --ntasks-per-node=28 --time=00:30:00 --mem=100G --job-name=s4002 --export=ALL,SIMNO=4002,NJOBS=36,NSIMS=1000,HTRB=0.00432,HTRH=0.00425,HTRW=0.0073,LNT=TRUE,TIPB=0.1775,TIPH=0.19,TIPW=0.2521,TTFB=0.8,TTFH=0.8,TTFW=0.8 runsim.sh
+sbatch -p ckpt -A csde-ckpt --array=1-36 --nodes=1 --ntasks-per-node=28 --time=00:30:00 --mem=100G --job-name=s4003 --export=ALL,SIMNO=4003,NJOBS=36,NSIMS=1000,HTRB=0.00432,HTRH=0.00425,HTRW=0.0073,LNT=TRUE,TIPB=0.1775,TIPH=0.19,TIPW=0.2521,TTFB=0.85,TTFH=0.85,TTFW=0.85 runsim.sh
+sbatch -p ckpt -A csde-ckpt --array=1-36 --nodes=1 --ntasks-per-node=28 --time=00:30:00 --mem=100G --job-name=s4004 --export=ALL,SIMNO=4004,NJOBS=36,NSIMS=1000,HTRB=0.00432,HTRH=0.00425,HTRW=0.0073,LNT=TRUE,TIPB=0.1775,TIPH=0.19,TIPW=0.2521,TTFB=0.9,TTFH=0.9,TTFW=0.9 runsim.sh
+sbatch -p ckpt -A csde-ckpt --array=1-36 --nodes=1 --ntasks-per-node=28 --time=00:30:00 --mem=100G --job-name=s4005 --export=ALL,SIMNO=4005,NJOBS=36,NSIMS=1000,HTRB=0.00432,HTRH=0.00425,HTRW=0.0073,LNT=TRUE,TIPB=0.1775,TIPH=0.19,TIPW=0.2521,TTFB=0.95,TTFH=0.95,TTFW=0.95 runsim.sh
+sbatch -p ckpt -A csde-ckpt --array=1-36 --nodes=1 --ntasks-per-node=28 --time=00:30:00 --mem=100G --job-name=s4006 --export=ALL,SIMNO=4006,NJOBS=36,NSIMS=1000,HTRB=0.00432,HTRH=0.00425,HTRW=0.0073,LNT=TRUE,TIPB=0.1775,TIPH=0.19,TIPW=0.2521,TTFB=1,TTFH=1,TTFW=1 runsim.sh
