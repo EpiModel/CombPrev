@@ -3,22 +3,20 @@
 
 library("EpiModelHPC")
 
-# Calibration/Testing -----------------------------------------------------
-
 # Test stability of run
 vars <- NULL
 sbatch_master(vars = vars,
               master.file = "burnin/burninFS/master.sh",
               simno.start = 100,
-              ckpt = FALSE,
+              ckpt = TRUE,
               nsims = 200,
-              ncores = 16,
+              ncores = 28,
               walltime = "00:30:00",
-              mem = "55G")
+              mem = "100G")
 
 # Big run batch for model selection
 sbatch_master(vars = vars,
-              master.file = "burnin/master.sh",
+              master.file = "burnin/burninFS/master.sh",
               simno.start = 200,
               ckpt = TRUE,
               nsims = 25000,

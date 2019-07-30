@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sbatch -p csde -A csde --array=1-13 --nodes=1 --ntasks-per-node=16 --time=00:30:00 --mem=55G --job-name=s100 --export=ALL,SIMNO=100,NJOBS=13,NSIMS=200 runsim.sh
+sbatch -p ckpt -A csde-ckpt --array=1-8 --nodes=1 --ntasks-per-node=28 --time=00:30:00 --mem=100G --job-name=s100 --export=ALL,SIMNO=100,NJOBS=8,NSIMS=200 runsim.sh
