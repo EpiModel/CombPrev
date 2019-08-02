@@ -1,12 +1,14 @@
 
-suppressWarnings(library("EpiModelHIV"))
-source("analysis/fx.R")
-library("tidyverse")
-library("foreach")
+suppressPackageStartupMessages(library("EpiModelHIV"))
+suppressPackageStartupMessages(library("tidyverse"))
+suppressPackageStartupMessages(library("foreach"))
+source("fx.R")
+
+system("scp analysis/fx.R mox:/gscratch/csde/sjenness/combprev/")
 
 ## CombPrev Table 1
 
-load("intervention/data/sim.n1000.rda")
+load("data/sim.n1000.rda")
 sim.base <- sim
 ref <- epi_stats(sim.base, otable = 1)
 ref
@@ -14,7 +16,7 @@ ref
 cf.sims <- 1001:1021
 doParallel::registerDoParallel(parallel::detectCores())
 t1set <- foreach(i = 1:length(cf.sims)) %dopar% {
-  fn <- list.files(path = "intervention/data/",
+  fn <- list.files(path = "data/",
                    pattern = as.character(cf.sims[i]), full.names = TRUE)
   load(fn)
   sim.comp <- sim
@@ -26,12 +28,12 @@ t1 <- full_join(ref, t1set)
 t1 <- add_column(t1, scenario = 1000:1021, .before = 1)
 t1
 
-write_csv(t1, "analysis/T1.csv")
+write_csv(t1, "T1.csv")
 
 
 ## CombPrev Table 2
 
-load("intervention/data/sim.n2000.rda")
+load("data/sim.n2000.rda")
 sim.base <- sim
 ref <- epi_stats(sim.base, otable = 2)
 ref
@@ -39,7 +41,7 @@ ref
 cf.sims <- 2001:2021
 doParallel::registerDoParallel(parallel::detectCores())
 t2set <- foreach(i = 1:length(cf.sims)) %dopar% {
-  fn <- list.files(path = "intervention/data/",
+  fn <- list.files(path = "data/",
                    pattern = as.character(cf.sims[i]), full.names = TRUE)
   load(fn)
   sim.comp <- sim
@@ -52,12 +54,12 @@ t2 <- full_join(ref, t2set)
 t2 <- add_column(t2, scenario = 2000:2021, .before = 1)
 t2
 
-write_csv(t2, "analysis/T2.csv")
+write_csv(t2, "T2.csv")
 
 
 ## CombPrev Table 3
 
-load("intervention/data/sim.n3000.rda")
+load("data/sim.n3000.rda")
 sim.base <- sim
 ref <- epi_stats(sim.base, otable = 3)
 ref
@@ -65,7 +67,7 @@ ref
 cf.sims <- 3001:3021
 doParallel::registerDoParallel(parallel::detectCores())
 t3set <- foreach(i = 1:length(cf.sims)) %dopar% {
-  fn <- list.files(path = "intervention/data/",
+  fn <- list.files(path = "data/",
                    pattern = as.character(cf.sims[i]), full.names = TRUE)
   load(fn)
   sim.comp <- sim
@@ -78,20 +80,21 @@ t3 <- full_join(ref, t3set)
 t3 <- add_column(t3, scenario = 3000:3021, .before = 1)
 t3
 
-write_csv(t3, "analysis/T3.csv")
+write_csv(t3, "T3.csv")
 
 
 ## CombPrev Table 4
 
-load("intervention/data/sim.n4000.rda")
+load("data/sim.n4000.rda")
 sim.base <- sim
 ref <- epi_stats(sim.base, otable = 4)
 ref
 
-cf.sims <- 4001:4006
+cf.sims <- 4001:4017
+cf.sims <- cf.sims[-c(6, 12)]
 doParallel::registerDoParallel(parallel::detectCores())
 t4set <- foreach(i = 1:length(cf.sims)) %dopar% {
-  fn <- list.files(path = "intervention/data/",
+  fn <- list.files(path = "data/",
                    pattern = as.character(cf.sims[i]), full.names = TRUE)
   load(fn)
   sim.comp <- sim
@@ -101,7 +104,12 @@ doParallel::stopImplicitCluster()
 t4set <- do.call("rbind", t4set)
 
 t4 <- full_join(ref, t4set)
-t4 <- add_column(t4, scenario = 4000:4006, .before = 1)
+t4 <- add_column(t4, scenario = c(4000:4005, 4007:4011, 4013:4017), .before = 1)
 t4
 
-write_csv(t4, "analysis/T4.csv")
+write_csv(t4, "T4.csv")
+
+
+## Receive from Hyak
+
+system("scp mox:/gscratch/csde/sjenness/combprev/*.csv analysis/")

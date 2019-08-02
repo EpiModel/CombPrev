@@ -4,22 +4,29 @@ library("methods")
 suppressMessages(library("EpiModelHIV"))
 
 ## Environmental Arguments
-pull_env_vars()
+pull_env_vars(num.vars = c("MULT1", "MULT2"),
+              logic.vars = "LNT")
 
 ## Parameters
 netstats <- readRDS("est/netstats.rda")
 epistats <- readRDS("est/epistats.rda")
-burnin <- readRDS("est/burnin.ATL.3race.FSonly.rda")
+if (LNT == TRUE) {
+  burnin <- readRDS("est/burnin.ATL.3race.FSonly.Prep15.rda")
+  PSP <- 0.712
+} else {
+  burnin <- readRDS("est/burnin.ATL.3race.FSonly.Prep15-noLNT.rda")
+  PSP <- 0.00411
+}
 
 param <- param_msm(netstats = netstats,
                    epistats = epistats,
-                   hiv.test.rate = c(0.00385, 0.00380, 0.00690),
+                   hiv.test.rate = c(0.00385, 0.00380, 0.00690)*MULT1,
                    hiv.test.late.prob = c(0, 0, 0),
                    tx.init.prob = c(0.1775, 0.190, 0.2521),
                    tt.part.supp = c(0, 0, 0),
                    tt.full.supp = c(1, 1, 1),
                    tt.dur.supp = c(0, 0, 0),
-                   tx.halt.part.prob = c(0.0062, 0.0055, 0.0031),
+                   tx.halt.part.prob = c(0.0062, 0.0055, 0.0031)/MULT2,
                    tx.halt.full.rr = c(0.45, 0.45, 0.45),
                    tx.halt.dur.rr = c(0.45, 0.45, 0.45),
                    tx.reinit.part.prob = c(0.00255, 0.00255, 0.00255),
@@ -34,16 +41,18 @@ param <- param_msm(netstats = netstats,
                    acts.aids.vl = 5.75,
                    prep.start = (52*60) + 1,
                    riskh.start = 52*59,
-                   prep.start.prob = 0.712,
-                   prep.require.lnt = TRUE,
-                   prep.risk.reassess.method = "year")
+                   prep.start.prob = PSP,
+                   prep.require.lnt = LNT,
+                   prep.risk.reassess.method = "year",
+                   MULT1 = MULT1,
+                   MULT2 = MULT2)
 init <- init_msm(prev.ugc = 0,
                  prev.rct = 0,
                  prev.rgc = 0,
                  prev.uct = 0)
 control <- control_msm(simno = fsimno,
-                       start = (52*60) + 1,
-                       nsteps = 52*65,
+                       start = (52*65) + 1,
+                       nsteps = 52*75,
                        nsims = ncores,
                        ncores = ncores,
                        initialize.FUN = reinit_msm,
@@ -54,8 +63,6 @@ control <- control_msm(simno = fsimno,
 sim <- netsim(burnin, param, init, control)
 
 # Merging
-# savesim(sim, save.min = TRUE, save.max = FALSE)
-savesim(sim, save.min = FALSE, save.max = TRUE, compress = FALSE, time.stamp = FALSE)
-
-# process_simfiles(simno = simno, min.n = njobs, nsims = nsims,
-#                  truncate.at = 52*60)
+savesim(sim, save.min = TRUE, save.max = FALSE)
+process_simfiles(simno = simno, min.n = njobs, nsims = nsims, compress = TRUE,
+                 truncate.at = 52*65, vars = c("incid", "ir100"))

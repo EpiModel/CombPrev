@@ -31,7 +31,7 @@ names(tdf)[1] <- "batch"
 tdf[2:4] <- sapply(tdf[2:4], as.numeric)
 head(tdf, 25); str(tdf)
 
-save(tdf, file = "data/hold/tdf.rda")
+save(tdf, file = "data/hold/tdf.FSonly.rda")
 
 # Simulation selection
 targets <- c(0.333, 0.127, 0.084)
@@ -41,9 +41,9 @@ tdf$diff <- abs(tdf$i.prev.dx.B - targets[1]) +
 head(arrange(tdf, diff), 25)
 
 # Verify outcomes
-load("data/sim.n200.715.rda")
+load("data/sim.n200.54.rda")
 ls()
-s1 <- get_sims(sim, sims = 20)
+s1 <- get_sims(sim, sims = 14)
 
 df <- as.data.frame(s1)
 df <- select(df, i.prev.dx.B, i.prev.dx.H, i.prev.dx.W)
@@ -53,9 +53,7 @@ colMeans(df)
 
 # Save selected simulation
 sim <- s1
-saveRDS(sim, file = "est/burnin.ATL.3race.rda", compress = "xz")
+saveRDS(sim, file = "est/burnin.ATL.3race.FSonly.rda", compress = "xz")
 
 # Hold the full netsim file
-system("mv data/sim.n200.715.rda data/hold/")
-
-# Reinstall EpiModelHIV before running interventions
+system("mv data/sim.n200.54.rda data/hold/")

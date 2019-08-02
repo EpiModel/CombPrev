@@ -3,7 +3,7 @@
 
 library("EpiModelHIV")
 
-load("intervention/data/sim.n1209.rda")
+load("burnin/burnin2/data/sim.n300.rda")
 
 sim$param$prep.start.prob
 sim$param$prep.require.lnt
@@ -16,17 +16,9 @@ sim$param$prep.discont.rate
 sim <- mutate_epi(sim, pFrac = prepCurr / prepElig)
 sim <- mutate_epi(sim, pFracA = prepCurr / num)
 
-pdf("analysis/Fig-CalibPrEP1.pdf", height = 6, width = 10)
 par(mar = c(3,3,1,1), mgp = c(2,1,0))
 plot(sim, y = "pFrac", ylim = c(0, 0.25))
 abline(v = 52*5, h = 0.15, lty = 2)
-dev.off()
-
-plot(sim, y = "pFracA")
-plot(sim, y = "prepCurr")
-plot(sim, y = "prepElig", ylim = c(0, 10000))
-plot(sim, y = "num")
-plot(sim, y = "ir100", ylim = c(0, 5))
 
 stat <- as.numeric(sim$epi$pFrac[52*5, ])
 summary(stat)

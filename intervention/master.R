@@ -5,10 +5,13 @@ library("EpiModelHPC")
 
 # Table 1 -----------------------------------------------------------------
 
-vars <- list(HTRB = 0.00432,
-             HTRH = 0.00425,
-             HTRW = 0.00730,
-             LNT = TRUE)
+vars <- list(HTRB = 0.00385,
+             HTRH = 0.00380,
+             HTRW = 0.00690,
+             LNT = TRUE,
+             TIPB = 0.1775,
+             TIPH = 0.190,
+             TIPW = 0.2521)
 
 # no targeting
 mults <- c(1, 1.25, 1.50, 1.75, 2)
@@ -19,7 +22,7 @@ cfvars$HTRW <- c(cfvars$HTRW * mults, 1/52, 1/26, 1/13)
 
 sbatch_master(vars = cfvars,
               expand.vars = FALSE,
-              master.file = "intervention/master.sh",
+              master.file = "intervention/master.T1.sh",
               simno.start = 1000,
               append = FALSE,
               ckpt = TRUE,
@@ -35,7 +38,7 @@ cfvars <- vars
 cfvars$HTRB <- c(cfvars$HTRB * mults, 1/52, 1/26, 1/13)
 sbatch_master(vars = cfvars,
               expand.vars = FALSE,
-              master.file = "intervention/master.sh",
+              master.file = "intervention/master.T1.sh",
               append = TRUE,
               ckpt = TRUE,
               nsims = 1000,
@@ -49,7 +52,7 @@ cfvars <- vars
 cfvars$HTRH <- c(cfvars$HTRH * mults, 1/52, 1/26, 1/13)
 sbatch_master(vars = cfvars,
               expand.vars = FALSE,
-              master.file = "intervention/master.sh",
+              master.file = "intervention/master.T1.sh",
               append = TRUE,
               ckpt = TRUE,
               nsims = 1000,
@@ -60,10 +63,13 @@ sbatch_master(vars = cfvars,
 
 # Table 2 -----------------------------------------------------------------
 
-vars <- list(HTRB = 0.00432,
-             HTRH = 0.00425,
-             HTRW = 0.00730,
-             LNT = FALSE)
+vars <- list(HTRB = 0.00385,
+             HTRH = 0.00380,
+             HTRW = 0.00690,
+             LNT = FALSE,
+             TIPB = 0.1775,
+             TIPH = 0.190,
+             TIPW = 0.2521)
 
 # no targeting
 mults <- c(1, 1.25, 1.50, 1.75, 2)
@@ -74,9 +80,9 @@ cfvars$HTRW <- c(cfvars$HTRW * mults, 1/52, 1/26, 1/13)
 
 sbatch_master(vars = cfvars,
               expand.vars = FALSE,
-              master.file = "intervention/master.sh",
+              master.file = "intervention/master.T2.sh",
               simno.start = 2000,
-              append = TRUE,
+              append = FALSE,
               ckpt = TRUE,
               nsims = 1000,
               ncores = 28,
@@ -90,7 +96,7 @@ cfvars <- vars
 cfvars$HTRB <- c(cfvars$HTRB * mults, 1/52, 1/26, 1/13)
 sbatch_master(vars = cfvars,
               expand.vars = FALSE,
-              master.file = "intervention/master.sh",
+              master.file = "intervention/master.T2.sh",
               append = TRUE,
               ckpt = TRUE,
               nsims = 1000,
@@ -104,7 +110,7 @@ cfvars <- vars
 cfvars$HTRH <- c(cfvars$HTRH * mults, 1/52, 1/26, 1/13)
 sbatch_master(vars = cfvars,
               expand.vars = FALSE,
-              master.file = "intervention/master.sh",
+              master.file = "intervention/master.T2.sh",
               append = TRUE,
               ckpt = TRUE,
               nsims = 1000,
@@ -116,9 +122,9 @@ sbatch_master(vars = cfvars,
 
 # Table 3 -----------------------------------------------------------------
 
-vars <- list(HTRB = 0.00432,
-             HTRH = 0.00425,
-             HTRW = 0.00730,
+vars <- list(HTRB = 0.00385,
+             HTRH = 0.00380,
+             HTRW = 0.00690,
              LNT = TRUE,
              TIPB = 0.1775,
              TIPH = 0.190,
@@ -174,31 +180,23 @@ sbatch_master(vars = cfvars,
 
 # Table 4 -----------------------------------------------------------------
 
-tt.part.supp = c(0.45, 0.40, 0.28)
-tt.full.supp = c(0.55, 0.60, 0.72)
-
-vars <- list(HTRB = 0.00432,
-             HTRH = 0.00425,
-             HTRW = 0.00730,
+vars <- list(HTRB = 0.00385,
+             HTRH = 0.00380,
+             HTRW = 0.00690,
              LNT = TRUE,
              TIPB = 0.1775,
              TIPH = 0.190,
              TIPW = 0.2521,
-             TTFB = 0.55,
-             TTFH = 0.60,
-             TTFW = 0.72)
+             THPB = 0.0062,
+             THPH = 0.0055,
+             THPW = 0.0031)
 
 # no targeting
-# mults <- c(0.1, 0.25, 0.50, 0.75, 1)
-# cfvars <- vars
-# cfvars$TTFB <- ((1-cfvars$TTFB)*mults)+cfvars$TTFB
-# cfvars$TTFH <- ((1-cfvars$TTFH)*mults)+cfvars$TTFH
-# cfvars$TTFW <- ((1-cfvars$TTFW)*mults)+cfvars$TTFW
-
-vals <- c(0.72, 0.75, 0.80, 0.85, 0.90, 0.95, 1)
-cfvars$TTFB <- vals
-cfvars$TTFH <- vals
-cfvars$TTFW <- vals
+mults <- c(1, 0.75, 0.50, 0.25, 0.10, 0.01)
+cfvars <- vars
+cfvars$THPB <- c(cfvars$THPB * mults)
+cfvars$THPH <- c(cfvars$THPH * mults)
+cfvars$THPW <- c(cfvars$THPW * mults)
 
 sbatch_master(vars = cfvars,
               expand.vars = FALSE,
@@ -207,6 +205,109 @@ sbatch_master(vars = cfvars,
               append = FALSE,
               ckpt = TRUE,
               nsims = 1000,
+              ncores = 28,
+              walltime = "00:30:00",
+              mem = "100G")
+
+
+# targeted BMSM
+cfvars <- vars
+cfvars$THPB <- c(cfvars$THPB * mults)
+sbatch_master(vars = cfvars,
+              expand.vars = FALSE,
+              master.file = "intervention/master.T4.sh",
+              append = TRUE,
+              ckpt = TRUE,
+              nsims = 1000,
+              ncores = 28,
+              walltime = "00:30:00",
+              mem = "100G")
+
+# targeted HMSM
+cfvars <- vars
+cfvars$THPH <- c(cfvars$THPH * mults)
+sbatch_master(vars = cfvars,
+              expand.vars = FALSE,
+              master.file = "intervention/master.T4.sh",
+              append = TRUE,
+              ckpt = TRUE,
+              nsims = 1000,
+              ncores = 28,
+              walltime = "00:30:00",
+              mem = "100G")
+
+
+# Figure 1 ----------------------------------------------------------------
+
+vars <- list(MULT1 = seq(1, 10, 0.5),
+             MULT2 = seq(1, 10, 0.5),
+             LNT = c(TRUE, FALSE))
+
+sbatch_master(vars = vars,
+              expand.vars = TRUE,
+              master.file = "intervention/master.F1.sh",
+              simno.start = 5000,
+              append = FALSE,
+              ckpt = TRUE,
+              nsims = 112,
+              ncores = 28,
+              walltime = "00:30:00",
+              mem = "100G")
+
+
+# Figure 2 ----------------------------------------------------------------
+
+vars <- list(HTRB = 0.00385,
+             HTRH = 0.00380,
+             HTRW = 0.00690,
+             LNT = TRUE,
+             TIPB = 0.1775,
+             TIPH = 0.190,
+             TIPW = 0.2521,
+             THPB = 0.0062,
+             THPH = 0.0055,
+             THPW = 0.0031)
+
+# no targeting
+mults <- seq(1, 10, 0.1)
+cfvars <- vars
+cfvars$HTRB <- c(cfvars$HTRB * mults)
+cfvars$HTRH <- c(cfvars$HTRH * mults)
+cfvars$HTRW <- c(cfvars$HTRW * mults)
+
+sbatch_master(vars = cfvars,
+              expand.vars = FALSE,
+              master.file = "intervention/master.F2.sh",
+              simno.start = 6000,
+              append = FALSE,
+              ckpt = TRUE,
+              nsims = 250,
+              ncores = 28,
+              walltime = "00:30:00",
+              mem = "100G")
+
+# targeted BMSM
+cfvars <- vars
+cfvars$HTRB <- c(cfvars$HTRB * mults)
+sbatch_master(vars = cfvars,
+              expand.vars = FALSE,
+              master.file = "intervention/master.F2.sh",
+              append = TRUE,
+              ckpt = TRUE,
+              nsims = 250,
+              ncores = 28,
+              walltime = "00:30:00",
+              mem = "100G")
+
+# targeted HMSM
+cfvars <- vars
+cfvars$HTRH <- c(cfvars$HTRH * mults)
+sbatch_master(vars = cfvars,
+              expand.vars = FALSE,
+              master.file = "intervention/master.F2.sh",
+              append = TRUE,
+              ckpt = TRUE,
+              nsims = 250,
               ncores = 28,
               walltime = "00:30:00",
               mem = "100G")

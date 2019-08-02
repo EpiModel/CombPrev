@@ -30,7 +30,7 @@ param <- param_msm(netstats = netstats,
                    max.time.on.tx.part.int = 52 * 10,
                    max.time.off.tx.part.int = 52 * 10,
                    aids.mr = 1/250,
-                   trans.scale = c(2.10, 0.47, 0.29),
+                   trans.scale = c(2.21, 0.405, 0.255),
                    acts.scale = 1.00,
                    acts.aids.vl = 5.75,
                    prep.start = (52*60) + 1,
@@ -51,8 +51,8 @@ control <- control_msm(simno = fsimno,
 
 ## Simulation
 sim <- netsim(est, param, init, control)
-savesim(sim, save.min = TRUE, save.max = FALSE, compress = FALSE)
-# savesim(sim, save.min = FALSE, save.max = TRUE, compress = TRUE, time.stamp = FALSE)
+# savesim(sim, save.min = TRUE, save.max = FALSE, compress = FALSE)
+savesim(sim, save.min = FALSE, save.max = TRUE, compress = TRUE, time.stamp = FALSE)
 
 # Merging
-process_simfiles(simno = simno, min.n = njobs, nsims = nsims)
+# process_simfiles(simno = simno, min.n = njobs, nsims = nsims)

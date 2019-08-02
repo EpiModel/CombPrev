@@ -26,16 +26,16 @@ tdf <- data.frame(do.call("rbind", tdf), stringsAsFactors = FALSE)
 names(tdf) <- c("batch", "pFrac")
 tdf[2] <- sapply(tdf[2], as.numeric)
 head(tdf, 20); str(tdf)
-save(tdf, file = "data/hold/tdf2.rda")
+save(tdf, file = "data/hold/tdf2.FSonly.rda")
 
 targets <- c(0.15)
 tdf$diff <- abs(tdf$pFrac - targets[1])
 
 head(plyr::arrange(tdf, diff), 25)
 
-load("data/sim.n500.5.rda")
+load("data/sim.n400.6.rda")
 ls()
-s1 <- get_sims(sim, sims = 17)
+s1 <- get_sims(sim, sims = 26)
 
 df <- as.data.frame(s1)
 df <- select(df, prepCurr, prepElig)
@@ -47,7 +47,7 @@ pFrac
 # Save as best-fitting
 sim <- s1
 
-saveRDS(sim, file = "est/burnin.ATL.3race.Prep15.rda", compress = "xz")
+saveRDS(sim, file = "est/burnin.ATL.3race.FSonly.Prep15.rda", compress = "xz")
 
-load("data/sim.n500.8.rda")
-save(sim, file = "data/hold/sim.n500.8.rda", compress = "xz")
+load("data/sim.n400.6.rda")
+save(sim, file = "data/hold/sim.n400.6.rda", compress = "xz")
