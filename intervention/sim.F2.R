@@ -4,9 +4,7 @@ library("methods")
 suppressMessages(library("EpiModelHIV"))
 
 ## Environmental Arguments
-pull_env_vars(num.vars = c("HTRB", "HTRH", "HTRW",
-                           "TIPB", "TIPH", "TIPW",
-                           "THPB", "THPH", "THPW"),
+pull_env_vars(num.vars = c("MULT1", "MULT2"),
               logic.vars = "LNT")
 
 ## Parameters
@@ -22,13 +20,13 @@ if (LNT == TRUE) {
 
 param <- param_msm(netstats = netstats,
                    epistats = epistats,
-                   hiv.test.rate = c(HTRB, HTRH, HTRW),
+                   hiv.test.rate = c(0.00385, 0.00380, 0.00690)*MULT1,
                    hiv.test.late.prob = c(0, 0, 0),
-                   tx.init.prob = c(TIPB, TIPH, TIPW),
+                   tx.init.prob = c(0.1775, 0.190, 0.2521),
                    tt.part.supp = c(0, 0, 0),
                    tt.full.supp = c(1, 1, 1),
                    tt.dur.supp = c(0, 0, 0),
-                   tx.halt.part.prob = c(THPB, THPH, THPW),
+                   tx.halt.part.prob = c(0.0062, 0.0055, 0.0031)/MULT2,
                    tx.halt.full.rr = c(0.45, 0.45, 0.45),
                    tx.halt.dur.rr = c(0.45, 0.45, 0.45),
                    tx.reinit.part.prob = c(0.00255, 0.00255, 0.00255),
@@ -45,7 +43,9 @@ param <- param_msm(netstats = netstats,
                    riskh.start = 52*59,
                    prep.start.prob = PSP,
                    prep.require.lnt = LNT,
-                   prep.risk.reassess.method = "year")
+                   prep.risk.reassess.method = "year",
+                   MULT1 = MULT1,
+                   MULT2 = MULT2)
 init <- init_msm(prev.ugc = 0,
                  prev.rct = 0,
                  prev.rgc = 0,
@@ -57,13 +57,12 @@ control <- control_msm(simno = fsimno,
                        ncores = ncores,
                        initialize.FUN = reinit_msm,
                        save.nwstats = FALSE,
-                       save.clin.hist = FALSE,
-                       verbose = FALSE)
+                       save.clin.hist = FALSE)
 
 ## Simulation
 sim <- netsim(burnin, param, init, control)
 
 # Merging
 savesim(sim, save.min = TRUE, save.max = FALSE, compress = TRUE)
-# process_simfiles(simno = simno, min.n = njobs, nsims = nsims,
-#                  truncate.at = 52*65, compress = FALSE)
+# process_simfiles(simno = simno, min.n = njobs, nsims = nsims, compress = TRUE,
+#                  truncate.at = 52*65, vars = c("incid", "ir100"))

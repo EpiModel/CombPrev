@@ -63,6 +63,57 @@ calc_quants_ia <- function(x.base, x.comp, var, qnt.low = 0.025, qnt.high = 0.97
   return(out)
 }
 
+calc_quants_nnt <- function(x.base, x.comp, var.tests, var.incid,
+                            qnt.low = 0.025, qnt.high = 0.975, nsims = 1000) {
+
+  tt.comp.start <- unname(colSums(x.comp$epi[[var.tests]], na.rm = TRUE))
+  tt.base.start <- unname(colSums(x.base$epi[[var.tests]], na.rm = TRUE))
+
+  incid.comp.start <- unname(colSums(x.comp$epi[[var.incid]], na.rm = TRUE))
+  incid.base.start <- unname(colSums(x.base$epi[[var.incid]], na.rm = TRUE))
+
+  vec.nnt <- rep(NA, nsims)
+
+  for (i in 1:nsims) {
+    samp.comp <- sample(1:length(tt.comp.start))
+    samp.base <- sample(1:length(tt.base.start))
+    vec.nnt[i] <- median((tt.comp.start[samp.comp] - tt.base.start[samp.base]) /
+                         (incid.base.start[samp.base] - incid.comp.start[samp.comp]))
+  }
+
+  out <- quantile(vec.nnt, c(0.5, qnt.low, qnt.high), na.rm = TRUE, names = FALSE)
+  out <- sprintf("%.0f", out)
+  out <- paste0(out[1], " (", out[2], ", ", out[3], ")")
+
+  return(out)
+}
+
+# setwd("intervention/")
+# load("intervention/data/sim.n1000.rda")
+# x.base <- sim
+#
+# load("intervention/data/sim.n1007.rda")
+# x.comp <- sim
+#
+# calc_quants_nnt(x.base, x.comp, "tot.tests.W", "incid.W")
+#
+# var.tests = "tot.tests.W"
+# var.incid = "incid.W"
+
+# df <- as.data.frame(sim.base, out = "mean")
+# names(df)
+# df$newDx
+# df$newDx45
+# df$newDx140
+# df$newDx200
+# df$newDx2y
+
+
+# df <- as.data.frame(sim.comp, out = "mean")
+
+
+
+
 epi_stats <- function(sim.base,
                       sim.comp = NULL,
                       otable,
@@ -85,6 +136,12 @@ epi_stats <- function(sim.base,
     ia.B <- calc_quants_ia(sim.base, sim.comp, "incid.B", qnt.low, qnt.high)
     ia.H <- calc_quants_ia(sim.base, sim.comp, "incid.H", qnt.low, qnt.high)
     ia.W <- calc_quants_ia(sim.base, sim.comp, "incid.W", qnt.low, qnt.high)
+
+    # nnt
+    nnt <- calc_quants_nnt(sim.base, sim.comp, "tot.tests", "incid")
+    nnt.B <- calc_quants_nnt(sim.base, sim.comp, "tot.tests.B", "incid.B")
+    nnt.H <- calc_quants_nnt(sim.base, sim.comp, "tot.tests.H", "incid.H")
+    nnt.W <- calc_quants_nnt(sim.base, sim.comp, "tot.tests.W", "incid.W")
   }
 
   # HIV- tests per year
@@ -139,22 +196,22 @@ epi_stats <- function(sim.base,
   link1m.W <- calc_quants_prev(x, "cc.linked1m.int.W", at, 100, 1, qnt.low, qnt.high)
 
   # prevalence
-  prev <- calc_quants_prev(x, "i.prev", at, 100, 1, qnt.low, qnt.high)
-  prev.B <- calc_quants_prev(x, "i.prev.B", at, 100, 1, qnt.low, qnt.high)
-  prev.H <- calc_quants_prev(x, "i.prev.H", at, 100, 1, qnt.low, qnt.high)
-  prev.W <- calc_quants_prev(x, "i.prev.W", at, 100, 1, qnt.low, qnt.high)
+  # prev <- calc_quants_prev(x, "i.prev", at, 100, 1, qnt.low, qnt.high)
+  # prev.B <- calc_quants_prev(x, "i.prev.B", at, 100, 1, qnt.low, qnt.high)
+  # prev.H <- calc_quants_prev(x, "i.prev.H", at, 100, 1, qnt.low, qnt.high)
+  # prev.W <- calc_quants_prev(x, "i.prev.W", at, 100, 1, qnt.low, qnt.high)
 
   # diagnosed prevalence
-  prev.dx <- calc_quants_prev(x, "i.prev.dx", at, 100, 1, qnt.low, qnt.high)
-  prev.dx.B <- calc_quants_prev(x, "i.prev.dx.B", at, 100, 1, qnt.low, qnt.high)
-  prev.dx.H <- calc_quants_prev(x, "i.prev.dx.H", at, 100, 1, qnt.low, qnt.high)
-  prev.dx.W <- calc_quants_prev(x, "i.prev.dx.W", at, 100, 1, qnt.low, qnt.high)
+  # prev.dx <- calc_quants_prev(x, "i.prev.dx", at, 100, 1, qnt.low, qnt.high)
+  # prev.dx.B <- calc_quants_prev(x, "i.prev.dx.B", at, 100, 1, qnt.low, qnt.high)
+  # prev.dx.H <- calc_quants_prev(x, "i.prev.dx.H", at, 100, 1, qnt.low, qnt.high)
+  # prev.dx.W <- calc_quants_prev(x, "i.prev.dx.W", at, 100, 1, qnt.low, qnt.high)
 
   # raw incidence
-  incid <- calc_quants_ir(x, "incid", qnt.low, qnt.high)
-  incid.B <- calc_quants_ir(x, "incid.B", qnt.low, qnt.high)
-  incid.H <- calc_quants_ir(x, "incid.H", qnt.low, qnt.high)
-  incid.W <- calc_quants_ir(x, "incid.W", qnt.low, qnt.high)
+  # incid <- calc_quants_ir(x, "incid", qnt.low, qnt.high)
+  # incid.B <- calc_quants_ir(x, "incid.B", qnt.low, qnt.high)
+  # incid.H <- calc_quants_ir(x, "incid.H", qnt.low, qnt.high)
+  # incid.W <- calc_quants_ir(x, "incid.W", qnt.low, qnt.high)
 
   # incidence rate
   ir100 <- calc_quants_ir(x, "ir100", qnt.low, qnt.high)
@@ -167,19 +224,19 @@ epi_stats <- function(sim.base,
 
   if (otable %in% 1:2) {
     if (is.null(sim.comp)) {
-      dat <- cbind(ir100, pia = NA,
-                   ir100.B, pia.B = NA,
-                   ir100.H, pia.H = NA,
-                   ir100.W, pia.W = NA,
+      dat <- cbind(ir100, pia = NA, nnt = NA,
+                   ir100.B, pia.B = NA, nnt.B = NA,
+                   ir100.H, pia.H = NA, nnt.H = NA,
+                   ir100.W, pia.W = NA, nnt.W = NA,
                    testspy, pytest, prep, dx, dx.delay, vl.supp, vl.supp.all,
                    testspy.B, pytest.B, prep.B, dx.B, dx.delay.B, vl.supp.B, vl.supp.all.B,
                    testspy.H, pytest.H, prep.H, dx.H, dx.delay.H, vl.supp.H, vl.supp.all.H,
                    testspy.W, pytest.W, prep.W, dx.W, dx.delay.W, vl.supp.W, vl.supp.all.W)
     } else {
-      dat <- cbind(ir100, pia = ia$pia,
-                   ir100.B, pia.B = ia.B$pia,
-                   ir100.H, pia.H = ia.H$pia,
-                   ir100.W, pia.W = ia.W$pia,
+      dat <- cbind(ir100, pia = ia$pia, nnt,
+                   ir100.B, pia.B = ia.B$pia, nnt.B,
+                   ir100.H, pia.H = ia.H$pia, nnt.H,
+                   ir100.W, pia.W = ia.W$pia, nnt.W,
                    testspy, pytest, prep, dx, dx.delay, vl.supp, vl.supp.all,
                    testspy.B, pytest.B, prep.B, dx.B, dx.delay.B, vl.supp.B, vl.supp.all.B,
                    testspy.H, pytest.H, prep.H, dx.H, dx.delay.H, vl.supp.H, vl.supp.all.H,

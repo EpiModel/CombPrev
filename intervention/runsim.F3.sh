@@ -3,4 +3,4 @@
 #SBATCH -o ./out/%x_%a.out
  
 source ~/loadR.sh 
-Rscript sim.R
+Rscript sim.F3.R

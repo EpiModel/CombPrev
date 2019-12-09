@@ -18,10 +18,10 @@ remotes::install_github("statnet/tergm", ref = "d3af135", upgrade = FALSE)
 # Latest Dev Versions of EpiModel Packages
 remotes::install_github(c("statnet/EpiModel",
                           "statnet/EpiModelHPC",
-                          "statnet/tergmLite",
+                          "statnet/tergmLite@v1.2.0",
                           "EpiModel/EpiABC",
                           "EpiModel/ARTnetData",
-                          "EpiModel/ARTnet"),
+                          "EpiModel/ARTnet@v1.0.0"),
                         upgrade = FALSE)
 
 # Current Version of EpiModelHIV for Project

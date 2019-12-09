@@ -2,7 +2,7 @@
 
 library("EpiModelHIV")
 sim <- NULL
-source("burnin/fx.R")
+source("analysis/fx.R")
 
 fn <- list.files("burnin/data", full.names = TRUE)
 cbind(fn)
