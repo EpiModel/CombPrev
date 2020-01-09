@@ -111,6 +111,57 @@ t4
 write_csv(t4, "data/T4.csv")
 
 
+## Extra Tables Support Figure 2 (Dual Contour Plots)
+
+# prep-linked
+
+load("data/sim.n6500.rda")
+sim.base <- sim
+ref <- epi_stats(sim.base, otable = 1)
+ref
+
+cf.sims <- 6501:6503
+doParallel::registerDoParallel(parallel::detectCores())
+tset <- foreach(i = 1:length(cf.sims)) %dopar% {
+  fn <- list.files(path = "data/",
+                   pattern = as.character(cf.sims[i]), full.names = TRUE)
+  load(fn)
+  sim.comp <- sim
+  epi_stats(sim.base, sim.comp, otable = 1)
+}
+doParallel::stopImplicitCluster()
+tset <- do.call("rbind", tset)
+ta <- full_join(ref, tset)
+ta <- add_column(ta, scenario = 6500:6503, .before = 1)
+ta
+
+write_csv(ta, "data/TF2a.csv")
+
+
+# prep-unlinked
+
+load("data/sim.n6504.rda")
+sim.base <- sim
+ref <- epi_stats(sim.base, otable = 1)
+ref
+
+cf.sims <- 6505:6507
+doParallel::registerDoParallel(parallel::detectCores())
+tset <- foreach(i = 1:length(cf.sims)) %dopar% {
+  fn <- list.files(path = "data/",
+                   pattern = as.character(cf.sims[i]), full.names = TRUE)
+  load(fn)
+  sim.comp <- sim
+  epi_stats(sim.base, sim.comp, otable = 1)
+}
+doParallel::stopImplicitCluster()
+tset <- do.call("rbind", tset)
+ta <- full_join(ref, tset)
+ta <- add_column(ta, scenario = 6504:6507, .before = 1)
+ta
+
+write_csv(ta, "data/TF2b.csv")
+
 ## Receive from Hyak
 
-system("scp mox:/gscratch/csde/sjenness/combprev/*.csv analysis/")
+system("scp mox:/gscratch/csde/sjenness/combprev/data/*.csv analysis/")

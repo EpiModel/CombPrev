@@ -57,7 +57,8 @@ control <- control_msm(simno = fsimno,
                        ncores = ncores,
                        initialize.FUN = reinit_msm,
                        save.nwstats = FALSE,
-                       save.clin.hist = FALSE)
+                       save.clin.hist = FALSE,
+                       verbose = FALSE)
 
 ## Simulation
 sim <- netsim(burnin, param, init, control)

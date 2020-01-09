@@ -44,3 +44,6 @@ clusterApply(cl, sims, f, vars, 36, 1000)
 
 sims <- 8004
 clusterApply(cl, sims, f, vars, 36, 1000)
+
+sims <- 6500:6507
+clusterApply(cl, sims, f, vars, 36, 1000)

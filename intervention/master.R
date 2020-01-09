@@ -288,6 +288,26 @@ sbatch_master(vars = vars,
               mem = "100G")
 
 
+# Extra analyses requested by CDC clearance - January 2020
+vars <- list(MULT1 = c(1, 2, 5, 10, 1, 2, 5, 10),
+             MULT2 = c(1, 2, 5, 10, 1, 2, 5, 10),
+             LNT = c(TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE))
+
+sbatch_master(vars = vars,
+              expand.vars = FALSE,
+              master.file = "master.F2b.sh",
+              runsim.file = "runsim.F2.sh",
+              build.runsim = FALSE,
+              rscript.file = "sim.F2.R",
+              simno.start = 6500,
+              append = FALSE,
+              ckpt = FALSE,
+              nsims = 1000,
+              ncores = 28,
+              walltime = "00:30:00",
+              mem = "100G")
+
+
 
 # KD CROI Abstract --------------------------------------------------------
 
