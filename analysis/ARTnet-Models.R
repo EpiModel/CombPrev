@@ -29,9 +29,13 @@ p1 <- ggplot(pred2, aes(duration, pred)) +
             lwd = 1) +
   facet_grid(cols = vars(race.combo)) +
   scale_color_brewer(palette = "Set1") +
+  xlab(label = "Partnership Duration in Weeks") +
+  ylab(label = "Predicted Act Rate per Week") +
   theme_minimal()
+p1
 
-ggsave(filename = "analysis/actsMod.pdf", width = 10, height = 6, device = "pdf", units = "in")
+ggsave(filename = "analysis/actsMod.pdf", width = 9, height = 5.5, device = "pdf", units = "in")
+ggsave(filename = "analysis/actsMod.jpg", width = 9, height = 5.5, device = "jpeg", units = "in")
 
 
 e2 <- e$cond.mc.mod
@@ -63,10 +67,14 @@ p1 <- ggplot(pred2, aes(duration, pred)) +
             lwd = 1) +
   facet_grid(cols = vars(prep)) +
   scale_color_brewer(palette = "Set1") +
+  xlab(label = "Partnership Duration in Weeks") +
+  ylab(label = "Predicted Probability of Condom Use per Act") +
   theme_minimal()
 p1
 
-ggsave(filename = "analysis/condMod1.pdf", width = 10, height = 6, device = "pdf", units = "in")
+ggsave(filename = "analysis/condMod1.pdf", width = 9, height = 5.5, device = "pdf", units = "in")
+ggsave(filename = "analysis/condMod1.jpg", width = 9, height = 5.5, device = "jpeg", units = "in")
+
 
 e3 <- e$cond.oo.mod
 summary(e3)
@@ -90,10 +98,13 @@ p1 <- ggplot(pred2, aes(comb.age, pred)) +
                 lty = prep),
             lwd = 0.9) +
   scale_color_brewer(palette = "Set1") +
+  xlab(label = "Combined Ego and Partner Age in Years") +
+  ylab(label = "Predicted Probability of Condom Use within Contact") +
   theme_minimal()
 p1
 
-ggsave(filename = "analysis/condMod2.pdf", width = 10, height = 6, device = "pdf", units = "in")
+ggsave(filename = "analysis/condMod2.pdf", width = 9, height = 5.5, device = "pdf", units = "in")
+ggsave(filename = "analysis/condMod2.jpg", width = 9, height = 5.5, device = "jpeg", units = "in")
 
 
 ### Demographics ---

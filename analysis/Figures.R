@@ -227,21 +227,27 @@ ir.comp <- df.comp$ir100
 
 y <- supsmu(1:nrow(df.comp), df.comp$ir100)$y
 plot(y, type = "l")
+abline(h = c(1.23*0.1, 1.23*0.25), v = 1580, lty = 2)
+
 which.max(y <= 1.23*0.1)
-abline(h = 1.23*0.1, v = 1580, lty = 2)
 1580/52
-2019 + 1580/52
+2020 + 1580/52
+
+which.max(y <= 1.23*0.25)
+377/52
+2020 + 377/52
 
 pal <- adjustcolor(RColorBrewer::brewer.pal(3, "Set1"), alpha.f = 0.8)
-xs <- 2019 + 1:length(ir.base)/52
+xs <- 2020 + 1:length(ir.base)/52
 
 pdf(file = "analysis/fig/Figure3.pdf", height = 6, width = 10)
 par(mar = c(3,3,1,1), mgp = c(2,1,0))
 plot(xs, ir.base, type = "l", ylim = c(0, 1.5), col = pal[2], lwd = 1.2,
      ylab = "Incidence Rate per 100 PYAR", xlab = "Year", font.lab = 2)
 lines(xs, ir.comp, col = pal[1], lwd = 1.2)
-abline(h = 1.23*0.1, lty = 2, lwd = 1, col = adjustcolor("black", alpha.f = 0.6))
-text(2065, 0.2, "EHE 90% Target", cex = 0.9)
+abline(h = c(1.23*0.1, 1.23*0.25), lty = 2, lwd = 1, col = adjustcolor("black", alpha.f = 0.6))
+text(2062, 0.16, "EHE 2030 90% Reduction Target", cex = 0.9)
+text(2062, 0.35, "EHE 2025 75% Reduction Target", cex = 0.9)
 legend("topright", legend = c("Reference Model", "10x10 Model"), lty = 1, lwd = 2, col = pal[2:1],
        bty = "n", cex = 0.9)
 dev.off()
