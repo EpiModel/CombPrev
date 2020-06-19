@@ -26,7 +26,7 @@ remotes::install_github(c("statnet/EpiModel@2c131f0",
                         upgrade = FALSE)
 
 # Current Version of EpiModelHIV for Project
-remotes::install_github("EpiModel/EpiModelHIV-p@CombPrev",
+remotes::install_github("EpiModel/EpiModelHIV-p@CombPrev-AIDSR1",
                         upgrade = FALSE)
 
 
@@ -39,17 +39,17 @@ sessioninfo::package_info(pkgs = c("network", "networkDynamic", "statnet.common"
                                    "tergmLite", "EpiABC", "EpiModelHIV",
                                    "ARTnetData", "ARTnet"), dependencies = FALSE)
 
-# Jul 10 2019
+# June 19 2020
 # package        * version     date       lib source
-# ARTnet           1.0.0       2019-07-10 [1] Github (EpiModel/ARTnet@150c631)
-# ARTnetData       1.0         2019-07-10 [1] Github (EpiModel/ARTnetData@1d8ec6e)
-# EpiABC           1.0         2019-05-17 [1] Github (EpiModel/EpiABC@c32ecb6)
-# EpiModel       * 1.7.3       2019-05-23 [1] Github (statnet/EpiModel@2c131f0)
-# EpiModelHIV    * 1.5.0       2019-07-10 [1] Github (EpiModel/EpiModelHIV-p@554186b)
-# EpiModelHPC    * 2.0.2       2019-07-10 [1] Github (statnet/EpiModelHPC@a64dbf2)
-# ergm           * 3.10.0-4851 2019-06-04 [1] Github (statnet/ergm@8b30e92)
-# network        * 1.14-377    2019-06-04 [1] Github (statnet/network@deff2a0)
-# networkDynamic * 0.10        2019-06-04 [1] Github (statnet/networkDynamic@14182bf)
-# statnet.common   4.3.0-230   2019-06-04 [1] Github (statnet/statnet.common@3307a8c)
-# tergm          * 3.6.0-1659  2019-06-04 [1] Github (statnet/tergm@d3af135)
-# tergmLite      * 1.2.0       2019-05-17 [1] Github (statnet/tergmLite@73d2a2d)
+# ARTnet           1.0.0       2020-06-19 [1] Github (EpiModel/ARTnet@150c631)
+# ARTnetData       1.0         2020-06-19 [1] Github (EpiModel/ARTnetData@1d8ec6e)
+# EpiABC           1.0         2019-05-16 [1] Github (EpiModel/EpiABC@c32ecb6)
+# EpiModel       * 1.7.3       2020-06-19 [1] Github (statnet/EpiModel@2c131f0)
+# EpiModelHIV    * 1.5.0       2020-06-19 [1] Github (EpiModel/EpiModelHIV-p@ffa3665)
+# EpiModelHPC    * 2.0.2       2020-06-19 [1] Github (statnet/EpiModelHPC@a64dbf2)
+# ergm           * 3.10.0-4851 2020-06-19 [1] Github (statnet/ergm@8b30e92)
+# network        * 1.14-377    2020-06-19 [1] Github (statnet/network@deff2a0)
+# networkDynamic * 0.10        2020-06-19 [1] Github (statnet/networkDynamic@14182bf)
+# statnet.common   4.3.0-230   2020-01-14 [1] Github (statnet/statnet.common@3307a8c)
+# tergm          * 3.6.0-1659  2020-06-19 [1] Github (statnet/tergm@d3af135)
+# tergmLite      * 1.2.0       2020-06-19 [1] Github (statnet/tergmLite@73d2a2d)
