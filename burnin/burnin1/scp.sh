@@ -5,7 +5,9 @@
 # Send
 scp est/*.rda mox:/gscratch/csde/sjenness/combprev/est
 
-scp burnin/burninFS/sim.R burnin/burninFS/runsim.sh burnin/burninFS/master.sh mox:/gscratch/csde/sjenness/combprev
+scp burnin/burnin1/*.R burnin/burnin1/*.sh mox:/gscratch/csde/sjenness/combprev
 
 # Receive
-scp mox:/gscratch/csde/sjenness/combprev/data/*.rda burnin/burninFS/data/
+scp mox:/gscratch/csde/sjenness/combprev/data/*.rda burnin/burnin1/data/
+
+scp mox:/gscratch/csde/sjenness/combprev/est/burnin1.ATL.3race.rda est/

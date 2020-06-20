@@ -50,6 +50,9 @@ sim <- netsim(est, param, init, control)
 df <- as.data.frame(sim, out = "mean")
 names(df)
 
+summary(df$cc.dx.delay)
+summary(df$cc.dx.delay.med)
+
 df$cc.test.int
 
 par(mar = c(3,3,1,1), mgp = c(2,1,0))
