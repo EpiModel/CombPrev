@@ -9,7 +9,7 @@ pull_env_vars()
 ## Parameters
 netstats <- readRDS("est/netstats.rda")
 epistats <- readRDS("est/epistats.rda")
-burnin <- readRDS("est/burnin.ATL.3race.FSonly.rda")
+burnin <- readRDS("est/burnin1.ATL.3race.rda")
 
 param <- param_msm(netstats = netstats,
                    epistats = epistats,

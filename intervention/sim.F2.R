@@ -11,10 +11,10 @@ pull_env_vars(num.vars = c("MULT1", "MULT2"),
 netstats <- readRDS("est/netstats.rda")
 epistats <- readRDS("est/epistats.rda")
 if (LNT == TRUE) {
-  burnin <- readRDS("est/burnin.ATL.3race.FSonly.Prep15.rda")
+  burnin <- readRDS("est/burnin2.ATL.Prep15.rda")
   PSP <- 0.712
 } else {
-  burnin <- readRDS("est/burnin.ATL.3race.FSonly.Prep15-noLNT.rda")
+  burnin <- readRDS("est/burnin2.ATL.Prep15-noLNT.rda")
   PSP <- 0.00411
 }
 
@@ -52,13 +52,12 @@ init <- init_msm(prev.ugc = 0,
                  prev.uct = 0)
 control <- control_msm(simno = fsimno,
                        start = (52*65) + 1,
-                       nsteps = 52*75,
+                       nsteps = 52*115,
                        nsims = ncores,
                        ncores = ncores,
                        initialize.FUN = reinit_msm,
                        save.nwstats = FALSE,
-                       save.clin.hist = FALSE,
-                       verbose = FALSE)
+                       save.clin.hist = FALSE)
 
 ## Simulation
 sim <- netsim(burnin, param, init, control)

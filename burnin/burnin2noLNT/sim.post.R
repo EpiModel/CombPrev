@@ -3,7 +3,7 @@
 
 suppressWarnings(library("EpiModelHIV"))
 
-load("burnin/burnin2noLNT/data/sim.n400.rda")
+load("burnin/burnin2noLNT/data/sim.n500.rda")
 
 sim$param$prep.start.prob
 sim$param$prep.require.lnt

@@ -50,6 +50,12 @@ sim <- netsim(est, param, init, control)
 df <- as.data.frame(sim, out = "mean")
 names(df)
 
+di <- data.frame(df$incid, df$incid.undx, df$incid.dx, df$incid.linked, df$incid.vsupp)
+di
+colSums(di, na.rm = TRUE)
+colSums(di, na.rm = TRUE)[2:5]/colSums(di, na.rm = TRUE)[1]
+
+
 summary(df$cc.dx.delay)
 summary(df$cc.dx.delay.med)
 

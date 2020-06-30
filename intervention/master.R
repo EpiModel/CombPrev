@@ -51,19 +51,19 @@ sbatch_master(vars = cfvars,
               walltime = "00:30:00",
               mem = "100G")
 
-# targeted HMSM
-mults <- c(2, 5, 10)
-cfvars <- vars
-cfvars$HTRH <- c(cfvars$HTRH * mults, 1/52, 1/26, 1/13)
-sbatch_master(vars = cfvars,
-              expand.vars = FALSE,
-              master.file = "master.T1.sh",
-              append = TRUE,
-              ckpt = TRUE,
-              nsims = 1000,
-              ncores = 28,
-              walltime = "00:30:00",
-              mem = "100G")
+# # targeted HMSM
+# mults <- c(2, 5, 10)
+# cfvars <- vars
+# cfvars$HTRH <- c(cfvars$HTRH * mults, 1/52, 1/26, 1/13)
+# sbatch_master(vars = cfvars,
+#               expand.vars = FALSE,
+#               master.file = "master.T1.sh",
+#               append = TRUE,
+#               ckpt = TRUE,
+#               nsims = 1000,
+#               ncores = 28,
+#               walltime = "00:30:00",
+#               mem = "100G")
 
 
 # Table 2 -----------------------------------------------------------------
@@ -104,24 +104,25 @@ sbatch_master(vars = cfvars,
               walltime = "00:30:00",
               mem = "100G")
 
-# targeted HMSM
-cfvars <- vars2
-mults <- c(2, 5, 10)
-cfvars$HTRH <- c(cfvars$HTRH * mults, 1/52, 1/26, 1/13)
-sbatch_master(vars = cfvars,
-              expand.vars = FALSE,
-              master.file = "master.T2.sh",
-              append = TRUE,
-              ckpt = TRUE,
-              nsims = 1000,
-              ncores = 28,
-              walltime = "00:30:00",
-              mem = "100G")
+# # targeted HMSM
+# cfvars <- vars2
+# mults <- c(2, 5, 10)
+# cfvars$HTRH <- c(cfvars$HTRH * mults, 1/52, 1/26, 1/13)
+# sbatch_master(vars = cfvars,
+#               expand.vars = FALSE,
+#               master.file = "master.T2.sh",
+#               append = TRUE,
+#               ckpt = TRUE,
+#               nsims = 1000,
+#               ncores = 28,
+#               walltime = "00:30:00",
+#               mem = "100G")
 
 
 
 # Table 3 -----------------------------------------------------------------
 
+## Care Linkage
 # no targeting
 mults <- c(1, 1.50, 2)
 cfvars <- vars
@@ -132,6 +133,7 @@ cfvars$TIPW <- c(cfvars$TIPW * mults, 1/4, 1/2, 1)
 sbatch_master(vars = cfvars,
               expand.vars = FALSE,
               master.file = "master.T3.sh",
+              build.runsim = TRUE,
               simno.start = 3000,
               append = FALSE,
               ckpt = TRUE,
@@ -155,25 +157,24 @@ sbatch_master(vars = cfvars,
               walltime = "00:30:00",
               mem = "100G")
 
-# targeted HMSM
-cfvars <- vars
-mults <- c(1.5, 2)
-cfvars$TIPH <- c(cfvars$TIPH * mults, 1/4, 1/2, 1)
-sbatch_master(vars = cfvars,
-              expand.vars = FALSE,
-              master.file = "master.T3.sh",
-              append = TRUE,
-              ckpt = TRUE,
-              nsims = 1000,
-              ncores = 28,
-              walltime = "00:30:00",
-              mem = "100G")
+# # targeted HMSM
+# cfvars <- vars
+# mults <- c(1.5, 2)
+# cfvars$TIPH <- c(cfvars$TIPH * mults, 1/4, 1/2, 1)
+# sbatch_master(vars = cfvars,
+#               expand.vars = FALSE,
+#               master.file = "master.T3.sh",
+#               append = TRUE,
+#               ckpt = TRUE,
+#               nsims = 1000,
+#               ncores = 28,
+#               walltime = "00:30:00",
+#               mem = "100G")
 
 
-# Table 4 -----------------------------------------------------------------
-
+## Care Retention
 # no targeting
-mults <- round(c(1, 1/1.5, 1/2, 1/5, 1/10, 1/20), 6)
+mults <- round(c(1, 1/1.5, 1/2, 1/4, 1/10), 6)
 cfvars <- vars
 cfvars$THPB <- c(cfvars$THPB * mults)
 cfvars$THPH <- c(cfvars$THPH * mults)
@@ -181,8 +182,8 @@ cfvars$THPW <- c(cfvars$THPW * mults)
 
 sbatch_master(vars = cfvars,
               expand.vars = FALSE,
-              master.file = "master.T4.sh",
-              simno.start = 4000,
+              master.file = "master.T3b.sh",
+              simno.start = 3500,
               append = FALSE,
               ckpt = TRUE,
               nsims = 1000,
@@ -193,11 +194,11 @@ sbatch_master(vars = cfvars,
 
 # targeted BMSM
 cfvars <- vars
-mults <- round(c(1/1.5, 1/2, 1/5, 1/10, 1/20), 6)
+mults <- round(c(1/1.5, 1/2, 1/4, 1/10), 6)
 cfvars$THPB <- c(cfvars$THPB * mults)
 sbatch_master(vars = cfvars,
               expand.vars = FALSE,
-              master.file = "master.T4.sh",
+              master.file = "master.T3b.sh",
               append = TRUE,
               ckpt = TRUE,
               nsims = 1000,
@@ -205,80 +206,33 @@ sbatch_master(vars = cfvars,
               walltime = "00:30:00",
               mem = "100G")
 
-# targeted HMSM
-cfvars <- vars
-mults <- round(c(1/1.5, 1/2, 1/5, 1/10, 1/20), 6)
-cfvars$THPH <- c(cfvars$THPH * mults)
-sbatch_master(vars = cfvars,
-              expand.vars = FALSE,
-              master.file = "master.T4.sh",
-              append = TRUE,
-              ckpt = TRUE,
-              nsims = 1000,
-              ncores = 28,
-              walltime = "00:30:00",
-              mem = "100G")
+# # targeted HMSM
+# cfvars <- vars
+# mults <- round(c(1/1.5, 1/2, 1/5, 1/10, 1/20), 6)
+# cfvars$THPH <- c(cfvars$THPH * mults)
+# sbatch_master(vars = cfvars,
+#               expand.vars = FALSE,
+#               master.file = "master.T4.sh",
+#               append = TRUE,
+#               ckpt = TRUE,
+#               nsims = 1000,
+#               ncores = 28,
+#               walltime = "00:30:00",
+#               mem = "100G")
 
 
 # Figure 1 ----------------------------------------------------------------
 
-# no targeting
-mults <- seq(1, 10, 0.1)
-cfvars <- vars
-cfvars$HTRB <- c(cfvars$HTRB * mults)
-cfvars$HTRH <- c(cfvars$HTRH * mults)
-cfvars$HTRW <- c(cfvars$HTRW * mults)
-
-sbatch_master(vars = cfvars,
-              expand.vars = FALSE,
-              master.file = "master.F1.sh",
-              simno.start = 5000,
-              append = FALSE,
-              ckpt = TRUE,
-              nsims = 500,
-              ncores = 28,
-              walltime = "00:30:00",
-              mem = "100G")
-
-# targeted BMSM
-cfvars <- vars
-cfvars$HTRB <- c(cfvars$HTRB * mults)
-sbatch_master(vars = cfvars,
-              expand.vars = FALSE,
-              master.file = "master.F1.sh",
-              append = TRUE,
-              ckpt = TRUE,
-              nsims = 500,
-              ncores = 28,
-              walltime = "00:30:00",
-              mem = "100G")
-
-# targeted HMSM
-cfvars <- vars
-cfvars$HTRH <- c(cfvars$HTRH * mults)
-sbatch_master(vars = cfvars,
-              expand.vars = FALSE,
-              master.file = "master.F1.sh",
-              append = TRUE,
-              ckpt = TRUE,
-              nsims = 500,
-              ncores = 28,
-              walltime = "00:30:00",
-              mem = "100G")
-
-
-# Figure 2 ----------------------------------------------------------------
-
-vars <- list(MULT1 = seq(1, 10, 1),
-             MULT2 = seq(1, 10, 1),
+vars <- list(MULT1 = seq(1, 10, 0.5),
+             MULT2 = seq(1, 10, 0.5),
              LNT = c(TRUE, FALSE))
 
 sbatch_master(vars = vars,
               expand.vars = TRUE,
-              master.file = "master.F2.sh",
-              runsim.file = "runsim.F2.sh",
+              master.file = "master.F1.sh",
+              runsim.file = "runsim.F1.sh",
               build.runsim = TRUE,
-              rscript.file = "sim.F2.R",
+              rscript.file = "sim.F1.R",
               simno.start = 6000,
               append = FALSE,
               ckpt = TRUE,
@@ -288,6 +242,8 @@ sbatch_master(vars = vars,
               mem = "100G")
 
 
+# Supplemental Table 30 ---------------------------------------------------
+
 # Extra analyses requested by CDC clearance - January 2020
 vars <- list(MULT1 = c(1, 2, 5, 10, 1, 2, 5, 10),
              MULT2 = c(1, 2, 5, 10, 1, 2, 5, 10),
@@ -295,13 +251,34 @@ vars <- list(MULT1 = c(1, 2, 5, 10, 1, 2, 5, 10),
 
 sbatch_master(vars = vars,
               expand.vars = FALSE,
-              master.file = "master.F2b.sh",
-              runsim.file = "runsim.F2.sh",
+              master.file = "master.F1b.sh",
+              runsim.file = "runsim.F1.sh",
               build.runsim = FALSE,
-              rscript.file = "sim.F2.R",
-              simno.start = 6500,
+              rscript.file = "sim.F1.R",
+              simno.start = 7000,
               append = FALSE,
-              ckpt = FALSE,
+              ckpt = TRUE,
+              nsims = 1000,
+              ncores = 28,
+              walltime = "00:30:00",
+              mem = "100G")
+
+
+# Figure 2 ----------------------------------------------------------------
+
+vars <- list(MULT1 = c(1, 10),
+             MULT2 = c(1, 10),
+             LNT = c(TRUE, TRUE))
+
+sbatch_master(vars = vars,
+              expand.vars = FALSE,
+              master.file = "master.F2.sh",
+              runsim.file = "runsim.F2.sh",
+              build.runsim = TRUE,
+              rscript.file = "sim.F2.R",
+              simno.start = 8000,
+              append = FALSE,
+              ckpt = TRUE,
               nsims = 1000,
               ncores = 28,
               walltime = "00:30:00",
@@ -376,25 +353,3 @@ sbatch_master(vars = vars,
               ncores = 28,
               walltime = "00:30:00",
               mem = "100G")
-
-
-# Figure 3 ----------------------------------------------------------------
-
-vars <- list(MULT1 = c(1, 2, 5, 10),
-             MULT2 = c(1, 2, 5, 10),
-             LNT = rep(c(TRUE, FALSE), each = 4))
-
-sbatch_master(vars = vars,
-              expand.vars = FALSE,
-              master.file = "master.F3.sh",
-              runsim.file = "runsim.F3.sh",
-              build.runsim = TRUE,
-              rscript.file = "sim.F3.R",
-              simno.start = 8000,
-              append = FALSE,
-              ckpt = TRUE,
-              nsims = 1000,
-              ncores = 28,
-              walltime = "00:30:00",
-              mem = "100G")
-

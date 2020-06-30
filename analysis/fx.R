@@ -173,10 +173,10 @@ epi_stats <- function(sim.base,
   dx.W <- calc_quants_prev(x, "cc.dx.W", at, 100, 1, qnt.low, qnt.high)
 
   # HIV+ diagnostic delay
-  dx.delay <- calc_quants_prev(x, "cc.dx.delay.int", at, 1/52, 2, qnt.low, qnt.high)
-  dx.delay.B <- calc_quants_prev(x, "cc.dx.delay.int.B", at, 1/52, 2, qnt.low, qnt.high)
-  dx.delay.H <- calc_quants_prev(x, "cc.dx.delay.int.H", at, 1/52, 2, qnt.low, qnt.high)
-  dx.delay.W <- calc_quants_prev(x, "cc.dx.delay.int.W", at, 1/52, 2, qnt.low, qnt.high)
+  dx.delay <- calc_quants_prev(x, "cc.dx.delay.int.med", at, 1/52, 2, qnt.low, qnt.high)
+  dx.delay.B <- calc_quants_prev(x, "cc.dx.delay.int.B.med", at, 1/52, 2, qnt.low, qnt.high)
+  dx.delay.H <- calc_quants_prev(x, "cc.dx.delay.int.H.med", at, 1/52, 2, qnt.low, qnt.high)
+  dx.delay.W <- calc_quants_prev(x, "cc.dx.delay.int.W.med", at, 1/52, 2, qnt.low, qnt.high)
 
   # HIV+ viral suppression
   vl.supp <- calc_quants_prev(x, "cc.vsupp", at, 100, 1, qnt.low, qnt.high)
@@ -224,19 +224,19 @@ epi_stats <- function(sim.base,
 
   if (otable %in% 1:2) {
     if (is.null(sim.comp)) {
-      dat <- cbind(ir100, pia = NA, nnt = NA,
-                   ir100.B, pia.B = NA, nnt.B = NA,
-                   ir100.H, pia.H = NA, nnt.H = NA,
-                   ir100.W, pia.W = NA, nnt.W = NA,
+      dat <- cbind(ir100, pia = NA,
+                   ir100.B, pia.B = NA,
+                   ir100.H, pia.H = NA,
+                   ir100.W, pia.W = NA,
                    testspy, pytest, prep, dx, dx.delay, vl.supp, vl.supp.all,
                    testspy.B, pytest.B, prep.B, dx.B, dx.delay.B, vl.supp.B, vl.supp.all.B,
                    testspy.H, pytest.H, prep.H, dx.H, dx.delay.H, vl.supp.H, vl.supp.all.H,
                    testspy.W, pytest.W, prep.W, dx.W, dx.delay.W, vl.supp.W, vl.supp.all.W)
     } else {
-      dat <- cbind(ir100, pia = ia$pia, nnt,
-                   ir100.B, pia.B = ia.B$pia, nnt.B,
-                   ir100.H, pia.H = ia.H$pia, nnt.H,
-                   ir100.W, pia.W = ia.W$pia, nnt.W,
+      dat <- cbind(ir100, pia = ia$pia,
+                   ir100.B, pia.B = ia.B$pia,
+                   ir100.H, pia.H = ia.H$pia,
+                   ir100.W, pia.W = ia.W$pia,
                    testspy, pytest, prep, dx, dx.delay, vl.supp, vl.supp.all,
                    testspy.B, pytest.B, prep.B, dx.B, dx.delay.B, vl.supp.B, vl.supp.all.B,
                    testspy.H, pytest.H, prep.H, dx.H, dx.delay.H, vl.supp.H, vl.supp.all.H,
