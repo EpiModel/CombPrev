@@ -6,6 +6,9 @@ library(EpiModelHIV)
 fn <- list.files("analysis/data", full.names = TRUE)
 cbind(fn)
 
+fn <- list.files("burnin/burnin1/data", full.names = TRUE)
+cbind(fn)
+
 load(fn[1])
 df <- as.data.frame(sim, out = "mean")
 names(df)
