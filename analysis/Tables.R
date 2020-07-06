@@ -1,6 +1,8 @@
 
 suppressPackageStartupMessages(library("EpiModelHIV"))
-suppressPackageStartupMessages(library("tidyverse"))
+suppressPackageStartupMessages(library("dplyr"))
+suppressPackageStartupMessages(library("tibble"))
+suppressPackageStartupMessages(library("readr"))
 suppressPackageStartupMessages(library("foreach"))
 
 system("scp analysis/fx.R mox:/gscratch/csde/sjenness/combprev/")
