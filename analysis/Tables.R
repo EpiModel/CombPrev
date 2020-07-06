@@ -1,6 +1,8 @@
 
 suppressPackageStartupMessages(library("EpiModelHIV"))
-suppressPackageStartupMessages(library("tidyverse"))
+suppressPackageStartupMessages(library("dplyr"))
+suppressPackageStartupMessages(library("tibble"))
+suppressPackageStartupMessages(library("readr"))
 suppressPackageStartupMessages(library("foreach"))
 
 system("scp analysis/fx.R mox:/gscratch/csde/sjenness/combprev/")
@@ -13,19 +15,20 @@ sim.base <- sim
 ref <- epi_stats(sim.base, otable = 1)
 ref
 
-cf.sims <- 1001:1018
+cf.sims <- 1001:1012
 doParallel::registerDoParallel(parallel::detectCores())
 t1set <- foreach(i = 1:length(cf.sims)) %dopar% {
   fn <- list.files(path = "data/",
-                   pattern = as.character(cf.sims[i]), full.names = TRUE)
+                   pattern = paste0("n", as.character(cf.sims[i])), full.names = TRUE)
   load(fn)
   sim.comp <- sim
   epi_stats(sim.base, sim.comp, otable = 1)
 }
 doParallel::stopImplicitCluster()
+
 t1set <- do.call("rbind", t1set)
 t1 <- full_join(ref, t1set)
-t1 <- add_column(t1, scenario = 1000:1018, .before = 1)
+t1 <- add_column(t1, scenario = 1000:1012, .before = 1)
 t1
 
 write_csv(t1, "data/T1.csv")
@@ -38,11 +41,11 @@ sim.base <- sim
 ref <- epi_stats(sim.base, otable = 2)
 ref
 
-cf.sims <- 2001:2018
+cf.sims <- 2001:2012
 doParallel::registerDoParallel(parallel::detectCores())
 t2set <- foreach(i = 1:length(cf.sims)) %dopar% {
   fn <- list.files(path = "data/",
-                   pattern = as.character(cf.sims[i]), full.names = TRUE)
+                   pattern = paste0("n", as.character(cf.sims[i])), full.names = TRUE)
   load(fn)
   sim.comp <- sim
   epi_stats(sim.base, sim.comp, otable = 2)
@@ -51,25 +54,25 @@ doParallel::stopImplicitCluster()
 t2set <- do.call("rbind", t2set)
 
 t2 <- full_join(ref, t2set)
-t2 <- add_column(t2, scenario = 2000:2018, .before = 1)
+t2 <- add_column(t2, scenario = 2000:2012, .before = 1)
 t2
 
 write_csv(t2, "data/T2.csv")
 
 
 ## CombPrev Table 3
+# Top half
 
 load("data/sim.n3000.rda")
 sim.base <- sim
 ref <- epi_stats(sim.base, otable = 3)
 ref
 
-cf.sims <- 3001:3017
-cf.sims <- cf.sims[-c(7, 13)]
+cf.sims <- 3001:3010
 doParallel::registerDoParallel(parallel::detectCores())
 t3set <- foreach(i = 1:length(cf.sims)) %dopar% {
   fn <- list.files(path = "data/",
-                   pattern = as.character(cf.sims[i]), full.names = TRUE)
+                   pattern = paste0("n", as.character(cf.sims[i])), full.names = TRUE)
   load(fn)
   sim.comp <- sim
   epi_stats(sim.base, sim.comp, otable = 3)
@@ -78,53 +81,51 @@ doParallel::stopImplicitCluster()
 t3set <- do.call("rbind", t3set)
 
 t3 <- full_join(ref, t3set)
-t3 <- add_column(t3, scenario = c(3000:3005, 3007:3011, 3013:3017), .before = 1)
+t3 <- add_column(t3, scenario = c(3000:3010), .before = 1)
 t3
 
-write_csv(t3, "data/T3.csv")
+write_csv(t3, "data/T3a.csv")
 
+# Bottom half
 
-## CombPrev Table 4
-
-load("data/sim.n4000.rda")
+load("data/sim.n3500.rda")
 sim.base <- sim
-ref <- epi_stats(sim.base, otable = 4)
+ref <- epi_stats(sim.base, otable = 3)
 ref
 
-cf.sims <- 4001:4017
-cf.sims <- cf.sims[-c(7, 13)]
+cf.sims <- 3501:3508
 doParallel::registerDoParallel(parallel::detectCores())
-t4set <- foreach(i = 1:length(cf.sims)) %dopar% {
+t3bset <- foreach(i = 1:length(cf.sims)) %dopar% {
   fn <- list.files(path = "data/",
-                   pattern = as.character(cf.sims[i]), full.names = TRUE)
+                   pattern = paste0("n", as.character(cf.sims[i])), full.names = TRUE)
   load(fn)
   sim.comp <- sim
-  epi_stats(sim.base, sim.comp, otable = 4)
+  epi_stats(sim.base, sim.comp, otable = 3)
 }
 doParallel::stopImplicitCluster()
-t4set <- do.call("rbind", t4set)
+t3bset <- do.call("rbind", t3bset)
 
-t4 <- full_join(ref, t4set)
-t4 <- add_column(t4, scenario = c(4000:4005, 4007:4011, 4013:4017), .before = 1)
-t4
+t3b <- full_join(ref, t3bset)
+t3b <- add_column(t3b, scenario = 3500:3508, .before = 1)
+t3b
 
-write_csv(t4, "data/T4.csv")
+write_csv(t3b, "data/T3b.csv")
 
 
-## Extra Tables Support Figure 2 (Dual Contour Plots)
+## Extra Tables Support Figure 1 (Supplemental Table 30)
 
 # prep-linked
 
-load("data/sim.n6500.rda")
+load("data/sim.n7000.rda")
 sim.base <- sim
 ref <- epi_stats(sim.base, otable = 1)
 ref
 
-cf.sims <- 6501:6503
+cf.sims <- 7001:7003
 doParallel::registerDoParallel(parallel::detectCores())
 tset <- foreach(i = 1:length(cf.sims)) %dopar% {
   fn <- list.files(path = "data/",
-                   pattern = as.character(cf.sims[i]), full.names = TRUE)
+                   pattern = paste0("n", as.character(cf.sims[i])), full.names = TRUE)
   load(fn)
   sim.comp <- sim
   epi_stats(sim.base, sim.comp, otable = 1)
@@ -132,20 +133,20 @@ tset <- foreach(i = 1:length(cf.sims)) %dopar% {
 doParallel::stopImplicitCluster()
 tset <- do.call("rbind", tset)
 ta <- full_join(ref, tset)
-ta <- add_column(ta, scenario = 6500:6503, .before = 1)
+ta <- add_column(ta, scenario = 7000:7003, .before = 1)
 ta
 
-write_csv(ta, "data/TF2a.csv")
+write_csv(ta, "data/TS30a.csv")
 
 
 # prep-unlinked
 
-load("data/sim.n6504.rda")
+load("data/sim.n7004.rda")
 sim.base <- sim
 ref <- epi_stats(sim.base, otable = 1)
 ref
 
-cf.sims <- 6505:6507
+cf.sims <- 7005:7007
 doParallel::registerDoParallel(parallel::detectCores())
 tset <- foreach(i = 1:length(cf.sims)) %dopar% {
   fn <- list.files(path = "data/",
@@ -157,10 +158,10 @@ tset <- foreach(i = 1:length(cf.sims)) %dopar% {
 doParallel::stopImplicitCluster()
 tset <- do.call("rbind", tset)
 ta <- full_join(ref, tset)
-ta <- add_column(ta, scenario = 6504:6507, .before = 1)
+ta <- add_column(ta, scenario = 7004:7007, .before = 1)
 ta
 
-write_csv(ta, "data/TF2b.csv")
+write_csv(ta, "data/TS30b.csv")
 
 ## Receive from Hyak
 

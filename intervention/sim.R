@@ -13,10 +13,10 @@ pull_env_vars(num.vars = c("HTRB", "HTRH", "HTRW",
 netstats <- readRDS("est/netstats.rda")
 epistats <- readRDS("est/epistats.rda")
 if (LNT == TRUE) {
-  burnin <- readRDS("est/burnin.ATL.3race.FSonly.Prep15.rda")
+  burnin <- readRDS("est/burnin2.ATL.Prep15.rda")
   PSP <- 0.712
 } else {
-  burnin <- readRDS("est/burnin.ATL.3race.FSonly.Prep15-noLNT.rda")
+  burnin <- readRDS("est/burnin2.ATL.Prep15-noLNT.rda")
   PSP <- 0.00411
 }
 

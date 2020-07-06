@@ -1,7 +1,6 @@
 
 rm(list = ls())
 # suppressMessages(library("EpiModelHIV"))
-devtools::load_all("~/Dropbox/Dev/EpiModelHIV/EpiModelHIV-p")
 
 netstats <- readRDS("est/netstats.rda")
 epistats <- readRDS("est/epistats.rda")
@@ -9,26 +8,26 @@ est <- readRDS("est/netest.rda")
 
 param <- param_msm(netstats = netstats,
                    epistats = epistats,
-                   hiv.test.rate = c(0.00432, 0.00425, 0.00730),
+                   hiv.test.rate = c(0.00385, 0.00380, 0.00690),
                    hiv.test.late.prob = c(0, 0, 0),
                    tx.init.prob = c(0.1775, 0.190, 0.2521),
-                   tt.part.supp = c(0.45, 0.40, 0.28),
-                   tt.full.supp = c(0.55, 0.60, 0.72),
+                   tt.part.supp = c(0, 0, 0),
+                   tt.full.supp = c(1, 1, 1),
                    tt.dur.supp = c(0, 0, 0),
-                   tx.halt.part.prob = c(0.009, 0.0084, 0.00768),
+                   tx.halt.part.prob = c(0.0062, 0.0055, 0.0031),
                    tx.halt.full.rr = c(0.45, 0.45, 0.45),
                    tx.halt.dur.rr = c(0.45, 0.45, 0.45),
-                   tx.reinit.part.prob = c(0.0115, 0.0135, 0.0205),
+                   tx.reinit.part.prob = c(0.00255, 0.00255, 0.00255),
                    tx.reinit.full.rr = c(1, 1, 1),
                    tx.reinit.dur.rr = c(1, 1, 1),
                    max.time.off.tx.full.int = 52 * 15,
                    max.time.on.tx.part.int = 52 * 10,
                    max.time.off.tx.part.int = 52 * 10,
                    aids.mr = 1/250,
-                   trans.scale = c(2.64, 0.45, 0.285),
+                   trans.scale = c(2.21, 0.405, 0.255),
                    acts.scale = 1.00,
                    acts.aids.vl = 5.75,
-                   prep.start = (52*60)+1,
+                   prep.start = (52*60) + 1,
                    riskh.start = 52*59,
                    prep.start.prob = 0.66,
                    prep.require.lnt = TRUE,
@@ -37,6 +36,8 @@ init <- init_msm(prev.ugc = 0,
                  prev.rct = 0,
                  prev.rgc = 0,
                  prev.uct = 0)
+
+devtools::load_all("~/Dropbox/Dev/EpiModelHIV/EpiModelHIV-p")
 control <- control_msm(simno = 1,
                        nsteps = 52*5,
                        nsims = 1,
@@ -48,6 +49,15 @@ sim <- netsim(est, param, init, control)
 
 df <- as.data.frame(sim, out = "mean")
 names(df)
+
+di <- data.frame(df$incid, df$incid.undx, df$incid.dx, df$incid.linked, df$incid.vsupp)
+di
+colSums(di, na.rm = TRUE)
+colSums(di, na.rm = TRUE)[2:5]/colSums(di, na.rm = TRUE)[1]
+
+
+summary(df$cc.dx.delay)
+summary(df$cc.dx.delay.med)
 
 df$cc.test.int
 

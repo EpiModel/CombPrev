@@ -9,7 +9,7 @@ pull_env_vars()
 ## Parameters
 netstats <- readRDS("est/netstats.rda")
 epistats <- readRDS("est/epistats.rda")
-burnin <- readRDS("est/burnin.ATL.3race.FSonly.rda")
+burnin <- readRDS("est/burnin1.ATL.3race.rda")
 
 param <- param_msm(netstats = netstats,
                    epistats = epistats,
@@ -29,7 +29,7 @@ param <- param_msm(netstats = netstats,
                    max.time.on.tx.part.int = 52 * 10,
                    max.time.off.tx.part.int = 52 * 10,
                    aids.mr = 1/250,
-                   trans.scale = c(2.21, 0.405, 0.255),
+                   trans.scale = c(2.44, 0.424, 0.270),
                    acts.scale = 1.00,
                    acts.aids.vl = 5.75,
                    prep.start = (52*60) + 1,

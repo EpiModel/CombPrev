@@ -10,10 +10,10 @@ scp analysis/fx.R $clus:/gscratch/csde/sjenness/combprev
 
 
 # Receive
-scp $clus:/gscratch/csde/sjenness/combprev/data/*.rda intervention/data/
 
-scp $clus:/gscratch/csde/sjenness/combprev/data/sim.n8001.rda intervention/data/
-scp $clus:/gscratch/csde/sjenness/combprev/data/hold/sim.n10* intervention/data/
+scp $clus:/gscratch/csde/sjenness/combprev/data/sim.n1000.rda analysis/data/
+
+scp $clus:/gscratch/csde/sjenness/combprev/data/sim.n800*.rda analysis/data/
 
 scp $clus:/gscratch/csde/sjenness/combprev/data/*.csv analysis/
 scp $clus:/gscratch/csde/sjenness/combprev/Fig1Data.rda analysis/
