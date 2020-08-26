@@ -6,7 +6,7 @@ This repository holds the source to code to reproduce the analysis featured in o
 
 > Jenness SM, Johnson JA, Hoover KW, Smith DK, Delaney KP. Modeling an Integrated HIV Prevention and Care Continuum to Achieve the Ending the HIV Epidemic Goals. _Under Review_. [[Pre-Print]](https://doi.org/10.1101/2020.03.02.20030254)
 
-<img src="https://github.com/EpiModel/CombPrev/raw/master/analysis/fig/Figure2.png">
+<img src="https://github.com/EpiModel/CombPrev/raw/master/analysis/fig/Figure1.jpg">
 
 ## Abstract
 
@@ -25,7 +25,7 @@ A 10-fold relative increase in HIV screening rates (to approximately biannual sc
 #### Conclusions 	
 Interventions to improve HIV screening linked with PrEP for those screening negative, and HIV care retention would have a substantial impact on HIV prevention. However, additional interventions will be necessary to reach the EHE goal of a 90% reduction in incidence for Atlanta MSM by 2030.
 
-<img src="https://github.com/EpiModel/CombPrev/raw/master/analysis/fig/Figure3.png">
+<img src="https://github.com/EpiModel/CombPrev/raw/master/analysis/fig/Figure2.jpg">
 
 ## Model Code
 
