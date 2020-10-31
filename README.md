@@ -4,7 +4,7 @@ This repository holds the source to code to reproduce the analysis featured in o
 
 ## Citation
 
-> Jenness SM, Johnson JA, Hoover KW, Smith DK, Delaney KP. Modeling an Integrated HIV Prevention and Care Continuum to Achieve the Ending the HIV Epidemic Goals. 2020. _In Press: AIDS_. [[Pre-Print]](https://doi.org/10.1101/2020.03.02.20030254)
+> 68.	Jenness SM, Johnson JA, Hoover KW, Smith DK, Delaney K. Modeling an Integrated HIV Prevention and Care Continuum to Achieve the Ending the HIV Epidemic Goals. _AIDS._ 2020. 34(14): 2103–2113.  [[LINK]](https://pubmed.ncbi.nlm.nih.gov/32910062/)
 
 <img src="https://github.com/EpiModel/CombPrev/raw/master/analysis/fig/Figure1.jpg">
 
